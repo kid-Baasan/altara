@@ -105,36 +105,33 @@ Footer.
 ### cultural-tours.html
 
 Same header/footer pattern as `about.html`. `.hero.hero--cultural.hero--page`
-full-viewport title hero (eyebrow → h1 → description, same 3-part pattern as
-every `.hero--page` hero — see below), then a 6-card `.tour-grid`. `.tour-card`
-is now the same full-bleed editorial image-card family as `.journey-card` in
-the Explore Trips slider — the whole card is an `<a>`, with a `.bg` div for
-the hover zoom, a `.tour-tag` category pill (top-left), a `.tour-index`
-numbered circle (top-right), and a `.tour-card-body` overlaid at the bottom
-(title, `.tour-meta` icon+text stats, a `.tour-divider` rule, then a
-description that's hidden until hover, same interaction as `.activity-info
-p`). The CTA reuses `.journey-btn` directly rather than a separate
-`.tour-cta` class — don't recreate the old white-card-with-icons version
-from memory. Its Dark CTA is `.dark-cta.dark-cta--photo` (a background
-image + black overlay, via the `.dark-cta--photo` modifier — homepage and
-About keep the plain dark-green/gold-glow `.dark-cta`, unmodified) with
-`.contact-pill` WhatsApp/email links instead of the usual `.btn` pair. The
-header's
-"Experiences" dropdown "Cultural Tours" item and the footer's "Cultural
-Travelers" link both point here from every page — keep those in sync if
-this page is ever renamed or removed. This is the template to copy for the
-other dropdown items (Trekking Tours, Festivities, Activities, Luxury
-Tours) once those pages exist — they currently all still point at
-`index.html#journeys` as a placeholder.
+full-viewport title-only hero (see the `.hero--page` note below), then a
+6-card `.tour-grid`. `.tour-card` is a plain white card (border, hover
+lift) — `.tour-card-image` on top, then a `.tour-card-body` with the
+title, a `.tour-meta` icon+text row (duration/altitude/season), a
+`.tour-divider` rule, an always-visible description, and a `.tour-cta`
+underline link. No tag/index badge on the image, no full-bleed overlay
+text, no hover-to-reveal description — that was an earlier direction;
+don't reintroduce it from memory. Its Dark CTA is `.dark-cta.dark-cta--photo`
+(a background image + a light black overlay via `.dark-cta--photo` — homepage
+and About keep the plain dark-green/gold-glow `.dark-cta`, unmodified;
+`.dark-cta-inner` text is forced white on this variant) with `.contact-pill`
+WhatsApp/email links (white border on hover, not gold) instead of the usual
+`.btn` pair. The header's "Experiences" dropdown "Cultural Tours" item and
+the footer's "Cultural Travelers" link both point here from every page —
+keep those in sync if this page is ever renamed or removed. This is the
+template to copy for the other dropdown items (Trekking Tours, Festivities,
+Activities, Luxury Tours) once those pages exist — they currently all still
+point at `index.html#journeys` as a placeholder.
 
 ### `.hero--page` content pattern
 
-Every inner-page hero (`about.html`, `cultural-tours.html`) follows the same
-3-part structure inside `.hero-content`, top to bottom: a small
-`.eyebrow.eyebrow--on-dark` category label, the `<h1>` page title, then a
-`.hero-sub` description — no CTA buttons (those belong on the homepage hero
-only). Follow this order for any new `.hero--page` hero rather than
-inventing a different hierarchy.
+Every inner-page hero (`about.html`, `cultural-tours.html`) shows **only**
+the `<h1>` page title inside `.hero-content` — no eyebrow, no `.hero-sub`
+description, no CTA buttons (those belong on the homepage hero only). An
+earlier version put an eyebrow + description underneath the title; that was
+deliberately simplified down to just the title. Follow this for any new
+`.hero--page` hero rather than reintroducing the eyebrow/description.
 
 ### Nav dropdown — don't reintroduce the hover gap
 

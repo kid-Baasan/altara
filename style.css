@@ -414,8 +414,7 @@
     margin:0;
     padding:0 60px 90px;
   }
-  .hero--page .hero-content h1{margin-bottom:14px;}
-  .hero--page .hero-sub{margin:0;max-width:480px;}
+  .hero--page .hero-content h1{margin-bottom:0;}
   @media (max-width:580px){
     .hero--page .hero-content{padding:0 26px 60px;}
   }
@@ -623,53 +622,44 @@
     grid-template-columns:repeat(3,1fr);
     gap:44px;
   }
-  /* Full-bleed editorial image card — same family as .journey-card in the
-     Explore Trips slider (image + .bg zoom-on-hover div + bottom gradient
-     + overlaid text), so Cultural Tours and the homepage journeys read as
-     one consistent card language. No tag/index badge — just the image,
-     title, meta row, and a CTA (.tour-simple-cta) that only reveals on
-     hover/focus/press. */
+  /* Plain white card: image on top, then a padded body with title, an
+     icon+text meta row, a divider rule, description, and an always-visible
+     underline CTA — no overlay text, no tag/index badge. */
   .tour-card{
-    position:relative;
-    display:block;
-    aspect-ratio:3/4;
-    overflow:hidden;
-    background-size:cover;
-    background-position:center;
+    display:flex;
+    flex-direction:column;
+    background:var(--color-white);
+    border:1px solid var(--color-rule);
+    transition:border-color .3s var(--ease), transform .3s var(--ease);
   }
-  .tour-card .bg{
-    position:absolute;inset:0;
-    background-size:cover;
-    background-position:center;
+  .tour-card:hover{border-color:var(--color-accent-gold);transform:translateY(-6px);}
+  .tour-card-image{
+    position:relative;
+    aspect-ratio:4/3;
+    overflow:hidden;
+  }
+  .tour-card-image img{
+    width:100%;height:100%;
+    object-fit:cover;
     transition:transform .8s var(--ease);
   }
-  .tour-card:hover .bg{transform:scale(1.06);}
-  .tour-card::after{
-    content:"";
-    position:absolute;inset:0;
-    background:linear-gradient(to top, rgba(14,21,18,0.88) 0%, rgba(14,21,18,0.08) 52%);
-  }
+  .tour-card:hover .tour-card-image img{transform:scale(1.06);}
   .tour-card-body{
-    position:absolute;
-    left:0;right:0;bottom:0;
-    z-index:2;
-    padding:26px 24px 28px;
+    padding:28px 26px 30px;
+    display:flex;
+    flex-direction:column;
+    flex:1;
   }
   .tour-card-body h3{
-    font-family:var(--font-body);
-    font-weight:700;
-    font-size:16px;
+    font-size:19px;
     letter-spacing:1px;
-    text-transform:uppercase;
-    color:var(--color-white);
-    line-height:1.35;
-    margin-bottom:12px;
+    margin-bottom:14px;
   }
   .tour-meta{
     display:flex;
     flex-wrap:wrap;
     gap:10px 16px;
-    margin-bottom:14px;
+    margin-bottom:16px;
   }
   .tour-meta-item{
     display:inline-flex;
@@ -678,7 +668,7 @@
     font-family:var(--font-body);
     font-size:11px;
     font-weight:600;
-    color:#EDE9DF;
+    color:var(--color-body);
     white-space:nowrap;
   }
   .tour-meta-item svg{
@@ -688,49 +678,30 @@
   }
   .tour-divider{
     border:none;
-    border-top:1px solid rgba(255,255,255,0.25);
-    margin:0 0 14px;
+    border-top:1px solid var(--color-rule);
+    margin:0 0 18px;
   }
-  /* Description reveals on hover, same interaction language as the
-     Activities cards — keeps the resting grid clean. */
   .tour-card-body p{
-    font-size:13px;
-    line-height:1.6;
-    color:#EDE9DF;
-    max-height:0;
-    opacity:0;
-    overflow:hidden;
-    margin-bottom:0;
-    transition:opacity .4s var(--ease), max-height .4s var(--ease), margin-bottom .4s var(--ease);
+    font-size:13.5px;
+    line-height:1.7;
+    color:var(--color-body);
+    margin-bottom:20px;
+    flex:1;
   }
-  .tour-card:hover .tour-card-body p{
-    max-height:90px;
-    opacity:1;
-    margin-bottom:16px;
-  }
-
-  /* Simple underline CTA — invisible at rest, appearing only on hover,
-     keyboard focus, or press (not a permanent bordered button). */
-  .tour-simple-cta{
+  .tour-cta{
     display:inline-block;
     font-family:var(--font-body);
     font-size:11.5px;
     font-weight:700;
-    letter-spacing:1.1px;
+    letter-spacing:1.2px;
     text-transform:uppercase;
-    color:var(--color-white);
-    border-bottom:1px solid var(--color-white);
-    padding-bottom:3px;
-    opacity:0;
-    transform:translateY(6px);
-    transition:opacity .3s var(--ease), transform .3s var(--ease);
+    color:var(--color-primary-dark);
+    border-bottom:1px solid var(--color-primary-dark);
+    padding-bottom:4px;
+    align-self:flex-start;
+    transition:color .3s var(--ease), border-color .3s var(--ease);
   }
-  .tour-card:hover .tour-simple-cta,
-  .tour-card:focus-within .tour-simple-cta,
-  .tour-card:active .tour-simple-cta{
-    opacity:1;
-    transform:translateY(0);
-  }
+  .tour-cta:hover{color:var(--color-accent-gold-deep);border-color:var(--color-accent-gold-deep);}
 
   @media (max-width:900px){
     .tour-grid{grid-template-columns:repeat(2,1fr);gap:30px;}
@@ -1658,7 +1629,7 @@
     position:absolute;
     inset:0;
     z-index:1;
-    background:rgba(0,0,0,0.6);
+    background:rgba(0,0,0,0.38);
   }
   .dark-cta--photo .dark-cta-inner{color:var(--color-white);}
 
@@ -1678,7 +1649,7 @@
     text-transform:uppercase;
     transition:background .3s var(--ease), border-color .3s var(--ease);
   }
-  .contact-pill:hover{background:rgba(255,255,255,0.1);border-color:var(--color-accent-gold);}
+  .contact-pill:hover{background:rgba(255,255,255,0.1);border-color:var(--color-white);}
   .contact-pill svg{width:18px;height:18px;flex:none;stroke:var(--color-accent-gold);}
 
   /* ================= FOOTER ================= */
