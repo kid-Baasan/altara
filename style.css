@@ -419,22 +419,29 @@
     .hero--page .hero-content{padding:0 26px 60px;}
   }
 
-  /* Center-aligned variant of .hero--page — used on cultural-tours.html
-     only; about.html keeps the bottom-left title. */
+  /* Bottom-center variant of .hero--page — horizontally centered like
+     .hero--center used to be, but vertically at the bottom (like the
+     default .hero--page) so more of the hero photo shows above the title.
+     Used on cultural-tours.html only; about.html keeps bottom-left. */
   .hero--center{
-    align-items:center;
     justify-content:center;
   }
   .hero--center .hero-content{
     text-align:center;
     margin:0 auto;
-    padding:0 24px;
+    padding:0 26px 90px;
+  }
+  @media (max-width:580px){
+    .hero--center .hero-content{padding:0 26px 60px;}
   }
 
   /* Drifting cloud-mist overlay across the bottom of a hero — two looping
-     layers of the same image at different speed/opacity for a little
-     depth, sitting above the hero's own dark gradient (z-index:1) but
-     below the title (.hero-content is z-index:2). */
+     layers of the same image, both moving right-to-left at different
+     speed/opacity for a little depth, sitting above the hero's own dark
+     gradient (z-index:1) but below the title (.hero-content is z-index:2).
+     Slower on desktop, where the same % of a much wider track covers a lot
+     more pixels per second — without that, it reads as "too fast/too many
+     clouds" compared to how it looks on a narrow mobile viewport. */
   .hero-mist{
     position:absolute;
     left:0;right:0;bottom:0;
@@ -453,10 +460,13 @@
     background-position:0 bottom;
     background-size:auto 100%;
   }
-  .hero-mist-layer--1{opacity:0.5;animation:heroMistDriftA 55s linear infinite;}
-  .hero-mist-layer--2{opacity:0.3;bottom:-6%;animation:heroMistDriftB 80s linear infinite;}
-  @keyframes heroMistDriftA{from{transform:translateX(0);}to{transform:translateX(-33.33%);}}
-  @keyframes heroMistDriftB{from{transform:translateX(-33.33%);}to{transform:translateX(0);}}
+  .hero-mist-layer--1{opacity:0.4;animation:heroMistDrift 65s linear infinite;}
+  .hero-mist-layer--2{opacity:0.22;bottom:-6%;animation:heroMistDrift 100s linear infinite;animation-delay:-30s;}
+  @keyframes heroMistDrift{from{transform:translateX(0);}to{transform:translateX(-33.33%);}}
+  @media (min-width:901px){
+    .hero-mist-layer--1{animation-duration:150s;}
+    .hero-mist-layer--2{animation-duration:230s;}
+  }
   @media (prefers-reduced-motion: reduce){
     .hero-mist-layer{animation:none;}
   }
