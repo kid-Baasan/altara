@@ -40,16 +40,28 @@ early `if(!el) return;` inside its own IIFE so it's harmless to include
 1. **Header** — fixed, transparent over hero; on scroll >60px, background
    flips to white and the logo swaps from `logo white.png` → `logo.png`
    (handled in JS, not CSS, since it's a src swap). "Experiences" has a
-   hover/focus dropdown (Cultural / Trekking / Festivities / Activities /
-   Luxury Tours). A `.lang-btn` placeholder sits in the header (no i18n
-   wired up yet).
-2. **Hero** — full-bleed video (`taktshang.jpg` poster), centered
-   headline/CTA. `.hero` is reused on inner pages with two modifiers:
-   `.hero--about`/`.hero--cultural` etc. set the background image, and
-   `.hero--page` turns the same full-`100vh` hero into a bottom-left page
-   title (left-aligned `.hero-content`, no CTAs) instead of a centered one.
-3. **Explore Trips slider** — dark full-bleed horizontal card slider
-   (scroll-snap + JS arrow controls), sits directly under the hero.
+   hover/focus dropdown of exactly 4 items — Cultural Tours (the only one
+   linking to a real page, `cultural-tours.html`), Trekking Tours, Festival
+   Tours, Luxury Tours (all still placeholder `#journeys`/`index.html#journeys`
+   links) — deliberately no "Activities" item, since Activities is its own
+   full section further down the page, not a tour-package category. On
+   mobile the same 4 links live in `.mobile-nav-sub`. A `.lang-btn`
+   placeholder sits in the header (no i18n wired up yet).
+2. **Hero** — full-bleed video (`taktshang.jpg` poster), left with just the
+   headline + `.hero-sub` — no `.hero-ctas` button row (removed). `.hero` is
+   reused on inner pages with two modifiers: `.hero--about`/`.hero--cultural`
+   etc. set the background image, and `.hero--page` turns the same
+   full-`100vh` hero into a bottom-left page title (see the `.hero--page`
+   note below) instead of a centered one.
+3. **Explore Our Experiences slider** (`id="journeys"`, eyebrow "Plan Your
+   Trip") — dark full-bleed horizontal card slider (scroll-snap + JS arrow
+   controls) sitting directly under the hero. Exactly 4 cards, one per
+   dropdown category above (Trekking/Cultural/Festival/Luxury Tours) — each
+   card's `.journey-nights` badge shows a package count ("6 Packages" etc.)
+   instead of a night count, and there's no `.journey-country` line (these
+   are categories, not destinations). This replaced an earlier 6-card
+   "Signature Journeys" version keyed to specific trips (Bumthang Valley,
+   Dochula Pass, ...) — don't recreate that content from memory.
 4. **About (teaser)** — two-column stacked-photo + copy block (`id="story"`),
    "Read More" links to `about.html`.
 5. **Activities slider** (`id="activities"`) — horizontal scroll-snap card
@@ -81,7 +93,21 @@ early `if(!el) return;` inside its own IIFE so it's harmless to include
 8. **Why Altara** — image/copy split with bullet list
 9. **Blog** — teaser cards
 10. **FAQ** — accordion
-11. **Dark CTA** — near-black band, `id="enquire"`
+11. **Dark CTA** (`id="enquire"`) — `.dark-cta.dark-cta--photo.dark-cta--dark-photo`:
+    a `buddha point.jpg` background with a heavy black overlay (`.dark-cta--dark-photo`
+    stacks a darker `::after` on top of the lighter `.dark-cta--photo` one
+    used by Cultural Tours — don't change the shared `.dark-cta--photo`
+    opacity to darken this one, add/adjust `.dark-cta--dark-photo` instead).
+    Content is an `.eyebrow--on-dark` ("Begin Your Story"), a mixed-case
+    `.dark-cta-title` ("Your **Bhutan** awaits" — the middle word wrapped in
+    `.accent` for gold; note this heading is deliberately *not* uppercased,
+    unlike every other h1/h2/h3 on the site), a description, and two CTAs:
+    `.btn-solid-gold` (text forced dark via `.dark-cta--dark-photo
+    .btn-solid-gold`, scoped so it doesn't affect the plain gold button on
+    About's own Dark CTA) and a new `.btn-outline-gold` linking to the same
+    `wa.me/9752333456` WhatsApp number used on Cultural Tours. About's Dark
+    CTA is untouched — still the plain dark-green/gold-glow `.dark-cta` with
+    `.btn-outline-white`/`.btn-solid-gold`.
 12. **Footer** — 4-column dark footer
 
 (The old **Editorial** and **Press strip** sections have been removed

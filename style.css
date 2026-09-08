@@ -1633,6 +1633,30 @@
   }
   .dark-cta--photo .dark-cta-inner{color:var(--color-white);}
 
+  /* Heavier-overlay photo variant — homepage's "Begin Your Story" CTA
+     needs the background image much darker than the Cultural Tours one,
+     so this stacks on top of .dark-cta--photo rather than changing its
+     shared overlay opacity. */
+  .dark-cta--dark-photo::after{background:rgba(0,0,0,0.62);}
+  .dark-cta-title{
+    font-family:var(--font-body);
+    font-weight:700;
+    text-transform:none;
+    letter-spacing:0.5px;
+    font-size:clamp(38px,6vw,64px);
+    line-height:1.1;
+    color:var(--color-white);
+    margin-bottom:24px;
+  }
+  .dark-cta-title .accent{color:var(--color-accent-gold);}
+  .dark-cta--dark-photo .btn-solid-gold{color:var(--color-primary-dark);}
+  .btn-outline-gold{
+    background:transparent;
+    color:var(--color-accent-gold);
+    border-color:var(--color-accent-gold);
+  }
+  .btn-outline-gold:hover{background:var(--color-accent-gold);color:var(--color-primary-dark);}
+
   /* WhatsApp / email contact pills — an alternative to the .btn pair for
      CTAs that should open a chat or a mail client directly. */
   .contact-pill{
