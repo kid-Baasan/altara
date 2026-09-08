@@ -73,12 +73,12 @@ early `if(!el) return;` inside its own IIFE so it's harmless to include
    `flex:0 0 100%` (one full-width card per view, not a multi-card strip)
    and both `#activityPrev`/`#activityNext` are square (`border-radius:0`)
    — don't reintroduce the multi-card width or round the arrows back off
-   without being asked. Each card's `.activity-info p` description is
-   hidden by default and only reveals on `:hover` or on whichever card the
-   autoplay/scroll currently has centered (`.is-active`, toggled by that
-   same IIFE) — there's no separate per-card CTA button. Replaced the old
-   five-tile "Find Your Journey" category grid — don't recreate
-   `.category-tile`/`.category-row` from memory.
+   without being asked. Each card's `.activity-info p` description AND its
+   `.activity-cta` ("Explore This →") both stay hidden by default and only
+   reveal together on `:hover` or on whichever card the autoplay/scroll
+   currently has centered (`.is-active`, toggled by that same IIFE).
+   Replaced the old five-tile "Find Your Journey" category grid — don't
+   recreate `.category-tile`/`.category-row` from memory.
 6. **Testimonials** — static 4-column quote grid
 7. **Explore Bhutan map** — interactive SVG map of Bhutan's 20 dzongkhags.
    Scroll-pinned on desktop (`.bhutan-scroll-pin`, `position:sticky`) so the
@@ -98,10 +98,12 @@ early `if(!el) return;` inside its own IIFE so it's harmless to include
     stacks a darker `::after` on top of the lighter `.dark-cta--photo` one
     used by Cultural Tours — don't change the shared `.dark-cta--photo`
     opacity to darken this one, add/adjust `.dark-cta--dark-photo` instead).
-    Content is an `.eyebrow--on-dark` ("Begin Your Story"), a mixed-case
-    `.dark-cta-title` ("Your **Bhutan** awaits" — the middle word wrapped in
-    `.accent` for gold; note this heading is deliberately *not* uppercased,
-    unlike every other h1/h2/h3 on the site), a description, and two CTAs:
+    Content is an `.eyebrow--on-dark` ("Begin Your Story"), a **plain**
+    `<h2>` ("Your **Bhutan** Awaits" — the middle word wrapped in `.accent`
+    for gold, everything else the same uppercase League Gothic every other
+    h1/h2/h3 on the site uses) — an earlier version used a custom mixed-case
+    `.dark-cta-title` class here; that was reverted to stay on-theme, don't
+    reintroduce it — a description, and two CTAs:
     `.btn-solid-gold` (text forced dark via `.dark-cta--dark-photo
     .btn-solid-gold`, scoped so it doesn't affect the plain gold button on
     About's own Dark CTA) and a new `.btn-outline-gold` linking to the same
@@ -130,9 +132,14 @@ Footer.
 
 ### cultural-tours.html
 
-Same header/footer pattern as `about.html`. `.hero.hero--cultural.hero--page`
-full-viewport title-only hero (see the `.hero--page` note below), then a
-6-card `.tour-grid`. `.tour-card` is a plain white card (border, hover
+Same header/footer pattern as `about.html`. `.hero.hero--cultural.hero--page.hero--center`
+full-viewport title-only hero, but **center**-aligned (`.hero--center`
+overrides `.hero--page`'s usual bottom-left alignment) — this is the only
+page that does; About's hero stays bottom-left. It also has a `.hero-mist`
+overlay: two looping `.hero-mist-layer` divs (both `cloud.png`, different
+opacity/speed/direction) drifting across the bottom of the hero for a
+moving-mist effect — see the `.hero-mist` note below. Then a 6-card
+`.tour-grid`. `.tour-card` is a plain white card (border, hover
 lift) — `.tour-card-image` on top, then a `.tour-card-body` with the
 title, a `.tour-meta` icon+text row (duration/altitude/season), a
 `.tour-divider` rule, an always-visible description, and a `.tour-cta`
@@ -158,6 +165,21 @@ description, no CTA buttons (those belong on the homepage hero only). An
 earlier version put an eyebrow + description underneath the title; that was
 deliberately simplified down to just the title. Follow this for any new
 `.hero--page` hero rather than reintroducing the eyebrow/description.
+Alignment is bottom-left by default; add `.hero--center` (cultural-tours.html
+only, so far) to center it instead.
+
+### `.hero-mist` (drifting cloud overlay)
+
+A `.hero-mist` div (absolutely positioned across the bottom ~42% of the
+hero, `z-index:1` — below `.hero-content`'s `z-index:2`) holds two
+`.hero-mist-layer` divs, each the same `cloud.png` tiled via
+`background-repeat:repeat-x` on an element 3x viewport width, animated with
+`translateX` in opposite directions at different speeds/opacities
+(`heroMistDriftA`/`heroMistDriftB` keyframes) for a bit of parallax. Only
+on `cultural-tours.html` right now. `prefers-reduced-motion` freezes both
+layers in place rather than removing them. Copy this same 3-element
+structure (`.hero-mist` + two `.hero-mist-layer` children) if another hero
+needs the same drifting-mist look.
 
 ### Nav dropdown — don't reintroduce the hover gap
 

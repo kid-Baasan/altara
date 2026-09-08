@@ -419,6 +419,48 @@
     .hero--page .hero-content{padding:0 26px 60px;}
   }
 
+  /* Center-aligned variant of .hero--page — used on cultural-tours.html
+     only; about.html keeps the bottom-left title. */
+  .hero--center{
+    align-items:center;
+    justify-content:center;
+  }
+  .hero--center .hero-content{
+    text-align:center;
+    margin:0 auto;
+    padding:0 24px;
+  }
+
+  /* Drifting cloud-mist overlay across the bottom of a hero — two looping
+     layers of the same image at different speed/opacity for a little
+     depth, sitting above the hero's own dark gradient (z-index:1) but
+     below the title (.hero-content is z-index:2). */
+  .hero-mist{
+    position:absolute;
+    left:0;right:0;bottom:0;
+    height:42%;
+    min-height:180px;
+    overflow:hidden;
+    z-index:1;
+    pointer-events:none;
+  }
+  .hero-mist-layer{
+    position:absolute;
+    bottom:0;left:0;
+    width:300%;
+    height:100%;
+    background-repeat:repeat-x;
+    background-position:0 bottom;
+    background-size:auto 100%;
+  }
+  .hero-mist-layer--1{opacity:0.5;animation:heroMistDriftA 55s linear infinite;}
+  .hero-mist-layer--2{opacity:0.3;bottom:-6%;animation:heroMistDriftB 80s linear infinite;}
+  @keyframes heroMistDriftA{from{transform:translateX(0);}to{transform:translateX(-33.33%);}}
+  @keyframes heroMistDriftB{from{transform:translateX(-33.33%);}to{transform:translateX(0);}}
+  @media (prefers-reduced-motion: reduce){
+    .hero-mist-layer{animation:none;}
+  }
+
   /* ================= ABOUT ================= */
   .about{
     background:var(--color-white);
@@ -812,6 +854,32 @@
     opacity:1;
     margin-top:10px;
   }
+  /* CTA reveals alongside the description, same hover/active trigger. */
+  .activity-cta{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-family:var(--font-body);
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:1.1px;
+    text-transform:uppercase;
+    color:var(--color-white);
+    border-bottom:1px solid var(--color-accent-gold);
+    padding-bottom:3px;
+    margin-top:0;
+    opacity:0;
+    transform:translateY(6px);
+    transition:opacity .4s var(--ease), transform .4s var(--ease), margin-top .4s var(--ease);
+  }
+  .activity-cta .arrow{display:inline-block;transition:transform .3s var(--ease);}
+  .activity-card:hover .activity-cta,
+  .activity-card.is-active .activity-cta{
+    opacity:1;
+    transform:translateY(0);
+    margin-top:14px;
+  }
+  .activity-card:hover .activity-cta .arrow{transform:translateX(4px);}
 
   @media (max-width:900px){
     .activity-card{flex:0 0 calc(50% - 3px);height:420px;}
@@ -1638,17 +1706,9 @@
      so this stacks on top of .dark-cta--photo rather than changing its
      shared overlay opacity. */
   .dark-cta--dark-photo::after{background:rgba(0,0,0,0.62);}
-  .dark-cta-title{
-    font-family:var(--font-body);
-    font-weight:700;
-    text-transform:none;
-    letter-spacing:0.5px;
-    font-size:clamp(38px,6vw,64px);
-    line-height:1.1;
-    color:var(--color-white);
-    margin-bottom:24px;
-  }
-  .dark-cta-title .accent{color:var(--color-accent-gold);}
+  /* Same h2 the rest of the site uses (League Gothic, uppercase, white) —
+     the only deviation is a gold accent on one word via .accent. */
+  .dark-cta h2 .accent{color:var(--color-accent-gold);}
   .dark-cta--dark-photo .btn-solid-gold{color:var(--color-primary-dark);}
   .btn-outline-gold{
     background:transparent;
