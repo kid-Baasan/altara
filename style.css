@@ -672,95 +672,106 @@
   .tour-grid{
     display:grid;
     grid-template-columns:repeat(3,1fr);
-    gap:44px;
+    gap:20px;
   }
-  /* Plain white card: image on top, then a padded body with title, an
-     icon+text meta row, a divider rule, description, and an always-visible
-     underline CTA — no overlay text, no tag/index badge. */
+  /* Full-bleed portrait image card, text sitting directly on the photo —
+     a serif display title (Playfair Display, upright — the same family
+     the site already uses in italic for copy accents) roughly a third of
+     the way down, then a short description, then the meta row. No white
+     card body, no boxed CTA; the CTA is a quiet underline that only shows
+     on hover. */
   .tour-card{
-    display:flex;
-    flex-direction:column;
-    background:var(--color-white);
-    border:1px solid var(--color-rule);
-    transition:border-color .3s var(--ease), transform .3s var(--ease);
-  }
-  .tour-card:hover{border-color:var(--color-accent-gold);transform:translateY(-6px);}
-  .tour-card-image{
     position:relative;
-    aspect-ratio:4/3;
+    display:block;
+    aspect-ratio:3/5;
     overflow:hidden;
+    background-size:cover;
+    background-position:center;
   }
-  .tour-card-image img{
-    width:100%;height:100%;
-    object-fit:cover;
+  .tour-card .bg{
+    position:absolute;inset:0;
+    background-size:cover;
+    background-position:center;
     transition:transform .8s var(--ease);
   }
-  .tour-card:hover .tour-card-image img{transform:scale(1.06);}
+  .tour-card:hover .bg{transform:scale(1.06);}
+  .tour-card::after{
+    content:"";
+    position:absolute;inset:0;
+    background:linear-gradient(180deg, rgba(14,21,18,0.32) 0%, rgba(14,21,18,0.48) 45%, rgba(14,21,18,0.78) 100%);
+  }
   .tour-card-body{
-    padding:28px 26px 30px;
-    display:flex;
-    flex-direction:column;
-    flex:1;
+    position:absolute;
+    left:0;right:0;top:30%;
+    z-index:2;
+    padding:0 26px;
   }
   .tour-card-body h3{
-    font-size:19px;
+    font-family:var(--font-italic);
+    font-style:normal;
+    font-weight:700;
+    font-size:26px;
     letter-spacing:1px;
-    margin-bottom:14px;
+    text-transform:uppercase;
+    color:var(--color-white);
+    line-height:1.2;
+    margin-bottom:12px;
+  }
+  .tour-card-body p{
+    font-size:13.5px;
+    line-height:1.6;
+    color:#EDE9DF;
+    margin-bottom:16px;
   }
   .tour-meta{
     display:flex;
     flex-wrap:wrap;
-    gap:10px 16px;
-    margin-bottom:16px;
+    gap:8px 14px;
+    margin-bottom:14px;
   }
   .tour-meta-item{
     display:inline-flex;
     align-items:center;
     gap:6px;
     font-family:var(--font-body);
-    font-size:11px;
+    font-size:10.5px;
     font-weight:600;
-    color:var(--color-body);
+    color:#EDE9DF;
     white-space:nowrap;
   }
   .tour-meta-item svg{
-    width:13px;height:13px;
+    width:12px;height:12px;
     flex:none;
     stroke:var(--color-accent-gold);
-  }
-  .tour-divider{
-    border:none;
-    border-top:1px solid var(--color-rule);
-    margin:0 0 18px;
-  }
-  .tour-card-body p{
-    font-size:13.5px;
-    line-height:1.7;
-    color:var(--color-body);
-    margin-bottom:20px;
-    flex:1;
   }
   .tour-cta{
     display:inline-block;
     font-family:var(--font-body);
-    font-size:11.5px;
+    font-size:11px;
     font-weight:700;
     letter-spacing:1.2px;
     text-transform:uppercase;
-    color:var(--color-primary-dark);
-    border-bottom:1px solid var(--color-primary-dark);
-    padding-bottom:4px;
-    align-self:flex-start;
-    transition:color .3s var(--ease), border-color .3s var(--ease);
+    color:var(--color-white);
+    border-bottom:1px solid var(--color-accent-gold);
+    padding-bottom:3px;
+    opacity:0;
+    transform:translateY(6px);
+    transition:opacity .3s var(--ease), transform .3s var(--ease);
   }
-  .tour-cta:hover{color:var(--color-accent-gold-deep);border-color:var(--color-accent-gold-deep);}
+  .tour-card:hover .tour-cta,
+  .tour-card:focus-within .tour-cta{
+    opacity:1;
+    transform:translateY(0);
+  }
 
   @media (max-width:900px){
-    .tour-grid{grid-template-columns:repeat(2,1fr);gap:30px;}
+    .tour-grid{grid-template-columns:repeat(2,1fr);gap:14px;}
+    .tour-card-body h3{font-size:22px;}
   }
   @media (max-width:580px){
     .tour-grid{grid-template-columns:1fr;}
     .tour-section{padding:90px 0;}
+    .tour-card{aspect-ratio:3/4;}
   }
 
   /* ================= ACTIVITIES SLIDER ================= */

@@ -122,40 +122,47 @@ that only exists on the homepage (`#journeys`, `#why`, `#blog`) is written as
 `index.html#journeys` etc. The logo links to `index.html`. `#enquire` stays a
 same-page anchor since About has its own dark-CTA section.
 
-Sections: full-`100vh` image hero (`.hero.hero--about.hero--page`) → Our
-Story (`.about`) → Our Philosophy (`.about.about--reverse`, mirrors the
-layout) → Values (`.values-section`, 3 cards) → Team (`.team-section`,
-4 cards with gold-initial avatars — there are no real team photos in
-`assets/images/`, so avatars are deliberately initials-only; swap in real
-photos via the same `.team-avatar` markup if/when they exist) → Dark CTA →
-Footer.
+Sections: full-`100vh` image hero (`.hero.hero--about.hero--page.hero--center`,
+same bottom-center-title + `.hero-mist` cloud overlay as cultural-tours.html
+— see the `.hero--center`/`.hero-mist` notes below) → Our Story (`.about`) →
+Our Philosophy (`.about.about--reverse`, mirrors the layout) → Values
+(`.values-section`, 3 cards) → Team (`.team-section`, 4 cards with
+gold-initial avatars — there are no real team photos in `assets/images/`,
+so avatars are deliberately initials-only; swap in real photos via the same
+`.team-avatar` markup if/when they exist) → Dark CTA → Footer.
 
 ### cultural-tours.html
 
 Same header/footer pattern as `about.html`. `.hero.hero--cultural.hero--page.hero--center`
-full-viewport title-only hero, but **center**-aligned (`.hero--center`
-overrides `.hero--page`'s usual bottom-left alignment) — this is the only
-page that does; About's hero stays bottom-left. It also has a `.hero-mist`
-overlay: two looping `.hero-mist-layer` divs (both `cloud.png`, different
-opacity/speed/direction) drifting across the bottom of the hero for a
-moving-mist effect — see the `.hero-mist` note below. Then a 6-card
-`.tour-grid`. `.tour-card` is a plain white card (border, hover
-lift) — `.tour-card-image` on top, then a `.tour-card-body` with the
-title, a `.tour-meta` icon+text row (duration/altitude/season), a
-`.tour-divider` rule, an always-visible description, and a `.tour-cta`
-underline link. No tag/index badge on the image, no full-bleed overlay
-text, no hover-to-reveal description — that was an earlier direction;
-don't reintroduce it from memory. Its Dark CTA is `.dark-cta.dark-cta--photo`
-(a background image + a light black overlay via `.dark-cta--photo` — homepage
-and About keep the plain dark-green/gold-glow `.dark-cta`, unmodified;
-`.dark-cta-inner` text is forced white on this variant) with `.contact-pill`
-WhatsApp/email links (white border on hover, not gold) instead of the usual
-`.btn` pair. The header's "Experiences" dropdown "Cultural Tours" item and
-the footer's "Cultural Travelers" link both point here from every page —
-keep those in sync if this page is ever renamed or removed. This is the
-template to copy for the other dropdown items (Trekking Tours, Festivities,
-Activities, Luxury Tours) once those pages exist — they currently all still
-point at `index.html#journeys` as a placeholder.
+full-viewport title-only hero, **bottom-center**-aligned (`.hero--center`
+overrides `.hero--page`'s horizontal alignment only — it stays vertically
+bottom, just centered instead of left; both inner pages' heroes now use
+this). It also has a `.hero-mist` overlay — see the `.hero-mist` note below.
+Then a 6-card `.tour-grid`. `.tour-card` is now a **full-bleed portrait
+image card** again (the white-card-with-icons version was tried and
+reverted) — `aspect-ratio:3/5`, the whole card is an `<a>` with a `.bg` div
+for the hover zoom, and `.tour-card-body` sits at `top:30%` over the photo:
+an uppercase serif title (`.tour-card-body h3` uses `var(--font-italic)` —
+Playfair Display — set to `font-style:normal` for an upright serif; the
+Google Fonts `<link>` in every page's `<head>` was widened from
+`Playfair+Display:ital@1` to `ital,wght@0,700;1,400` specifically so the
+upright weight is available, not just italic), a short always-visible
+description, a compact `.tour-meta` row (duration + altitude only — season
+was dropped to match the reference layout), and a `.tour-cta` underline
+that only appears on hover/focus. No tag/index badge, no `.tour-divider`,
+no white card body — don't reintroduce those from memory. Its Dark CTA is
+`.dark-cta.dark-cta--photo` (a background image + a light black overlay via
+`.dark-cta--photo` — homepage and About keep their own `.dark-cta` variants,
+see above; `.dark-cta-inner` text is forced white on this variant) with
+`.contact-pill` WhatsApp/email links (white border on hover, not gold)
+instead of the usual `.btn` pair. The header's "Experiences" dropdown
+"Cultural Tours" item and the footer's "Cultural Travelers" link both point
+here from every page — keep those in sync if this page is ever renamed or
+removed. This is the template to copy for the other dropdown items
+(Trekking Tours, Festival Tours, Luxury Tours) once those pages exist —
+they currently all still point at `index.html#journeys`/`#journeys` as a
+placeholder. ("Activities" is deliberately not in this dropdown — it's its
+own homepage section, not a tour-package category.)
 
 ### `.hero--page` content pattern
 
@@ -165,19 +172,30 @@ description, no CTA buttons (those belong on the homepage hero only). An
 earlier version put an eyebrow + description underneath the title; that was
 deliberately simplified down to just the title. Follow this for any new
 `.hero--page` hero rather than reintroducing the eyebrow/description.
-Alignment is bottom-left by default; add `.hero--center` (cultural-tours.html
-only, so far) to center it instead.
+`.hero--page` alone is bottom-**left**; both current inner pages add
+`.hero--center` on top of it, which only overrides the horizontal alignment
+(`justify-content`) to center the title — vertical stays bottom (`align-items`
+is inherited from `.hero--page`, not reset) so the hero photo shows through
+above the title. If a future inner page wants the original bottom-left, just
+omit `.hero--center`.
 
 ### `.hero-mist` (drifting cloud overlay)
 
 A `.hero-mist` div (absolutely positioned across the bottom ~42% of the
 hero, `z-index:1` — below `.hero-content`'s `z-index:2`) holds two
 `.hero-mist-layer` divs, each the same `cloud.png` tiled via
-`background-repeat:repeat-x` on an element 3x viewport width, animated with
-`translateX` in opposite directions at different speeds/opacities
-(`heroMistDriftA`/`heroMistDriftB` keyframes) for a bit of parallax. Only
-on `cultural-tours.html` right now. `prefers-reduced-motion` freezes both
-layers in place rather than removing them. Copy this same 3-element
+`background-repeat:repeat-x` on an element 3x viewport width, both animated
+with the same `heroMistDrift` keyframe (`translateX` 0 → -33.33%, i.e.
+right-to-left) at different speeds/opacities/`animation-delay` for a bit of
+parallax — they used to drift in opposite directions (a `heroMistDriftB`
+keyframe) but that read as clouds arriving from both sides at once, so both
+layers now share one direction. A `min-width:901px` media query lengthens
+the duration a lot (65s/100s → 150s/230s) because the same %-based
+`translateX` covers far more pixels/second on a wide desktop viewport than
+on mobile — don't "fix" desktop speed by changing the base (mobile)
+duration, add/adjust the desktop override instead. Used on both
+`about.html` and `cultural-tours.html`. `prefers-reduced-motion` freezes
+both layers in place rather than removing them. Copy this same 3-element
 structure (`.hero-mist` + two `.hero-mist-layer` children) if another hero
 needs the same drifting-mist look.
 
