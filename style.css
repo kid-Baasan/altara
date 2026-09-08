@@ -626,8 +626,9 @@
   /* Full-bleed editorial image card — same family as .journey-card in the
      Explore Trips slider (image + .bg zoom-on-hover div + bottom gradient
      + overlaid text), so Cultural Tours and the homepage journeys read as
-     one consistent card language. .journey-btn is reused directly for the
-     CTA rather than duplicated. */
+     one consistent card language. No tag/index badge — just the image,
+     title, meta row, and a CTA (.tour-simple-cta) that only reveals on
+     hover/focus/press. */
   .tour-card{
     position:relative;
     display:block;
@@ -648,36 +649,6 @@
     position:absolute;inset:0;
     background:linear-gradient(to top, rgba(14,21,18,0.88) 0%, rgba(14,21,18,0.08) 52%);
   }
-  .tour-tag{
-    position:absolute;
-    top:18px;left:18px;
-    z-index:2;
-    background:var(--color-accent-gold);
-    color:var(--color-white);
-    font-family:var(--font-body);
-    font-size:10px;
-    font-weight:700;
-    letter-spacing:0.14em;
-    text-transform:uppercase;
-    padding:6px 12px;
-  }
-  .tour-index{
-    position:absolute;
-    top:16px;right:18px;
-    z-index:2;
-    width:36px;height:36px;
-    border-radius:50%;
-    background:rgba(14,21,18,0.4);
-    border:1px solid rgba(255,255,255,0.55);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-family:var(--font-display);
-    font-size:13px;
-    color:var(--color-white);
-    transition:background .35s var(--ease), border-color .35s var(--ease);
-  }
-  .tour-card:hover .tour-index{background:var(--color-accent-gold);border-color:var(--color-accent-gold);}
   .tour-card-body{
     position:absolute;
     left:0;right:0;bottom:0;
@@ -738,6 +709,29 @@
     margin-bottom:16px;
   }
 
+  /* Simple underline CTA — invisible at rest, appearing only on hover,
+     keyboard focus, or press (not a permanent bordered button). */
+  .tour-simple-cta{
+    display:inline-block;
+    font-family:var(--font-body);
+    font-size:11.5px;
+    font-weight:700;
+    letter-spacing:1.1px;
+    text-transform:uppercase;
+    color:var(--color-white);
+    border-bottom:1px solid var(--color-white);
+    padding-bottom:3px;
+    opacity:0;
+    transform:translateY(6px);
+    transition:opacity .3s var(--ease), transform .3s var(--ease);
+  }
+  .tour-card:hover .tour-simple-cta,
+  .tour-card:focus-within .tour-simple-cta,
+  .tour-card:active .tour-simple-cta{
+    opacity:1;
+    transform:translateY(0);
+  }
+
   @media (max-width:900px){
     .tour-grid{grid-template-columns:repeat(2,1fr);gap:30px;}
   }
@@ -777,8 +771,15 @@
     padding:2px 2px 10px;
     -ms-overflow-style:none;
     scrollbar-width:none;
+    cursor:grab;
   }
   .activity-track::-webkit-scrollbar{display:none;}
+  .activity-track.is-dragging{
+    cursor:grabbing;
+    scroll-snap-type:none;
+    scroll-behavior:auto;
+    user-select:none;
+  }
   .activity-card{
     position:relative;
     /* 4 cards per view on desktop — matches the .activity-track gap (6px,
@@ -1659,6 +1660,7 @@
     z-index:1;
     background:rgba(0,0,0,0.6);
   }
+  .dark-cta--photo .dark-cta-inner{color:var(--color-white);}
 
   /* WhatsApp / email contact pills — an alternative to the .btn pair for
      CTAs that should open a chat or a mail client directly. */

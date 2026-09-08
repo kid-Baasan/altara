@@ -40,8 +40,10 @@
 
   // Generic horizontal card slider — scroll-snap track + prev/next arrows.
   // Shared by the Journeys slider and the Activities slider (same
-  // scrollBy-one-card-width technique, different ids/card class).
-  function initCardSlider(trackId, prevId, nextId, cardClass){
+  // scrollBy-one-card-width technique, different ids/card class). Pass
+  // loop:true (Activities) to have the arrows wrap around at either end
+  // instead of disabling/fading out — Journeys stays a finite strip.
+  function initCardSlider(trackId, prevId, nextId, cardClass, loop){
     var track = document.getElementById(trackId);
     var prevBtn = document.getElementById(prevId);
     var nextBtn = document.getElementById(nextId);
@@ -55,17 +57,29 @@
       return card.getBoundingClientRect().width + gap;
     }
 
+    function maxScroll(){
+      return track.scrollWidth - track.clientWidth - 2;
+    }
+
     function updateArrows(){
-      var maxScroll = track.scrollWidth - track.clientWidth - 2;
+      if(loop) return; // arrows never disable/fade for a looping slider
       prevBtn.disabled = track.scrollLeft <= 0;
-      nextBtn.disabled = track.scrollLeft >= maxScroll;
+      nextBtn.disabled = track.scrollLeft >= maxScroll();
     }
 
     prevBtn.addEventListener('click', function(){
-      track.scrollBy({ left: -cardStep(), behavior: 'smooth' });
+      if(loop && track.scrollLeft <= 0){
+        track.scrollTo({ left: track.scrollWidth, behavior: 'smooth' });
+      } else {
+        track.scrollBy({ left: -cardStep(), behavior: 'smooth' });
+      }
     });
     nextBtn.addEventListener('click', function(){
-      track.scrollBy({ left: cardStep(), behavior: 'smooth' });
+      if(loop && track.scrollLeft >= maxScroll()){
+        track.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        track.scrollBy({ left: cardStep(), behavior: 'smooth' });
+      }
     });
     track.addEventListener('scroll', function(){
       window.requestAnimationFrame(updateArrows);
@@ -74,12 +88,13 @@
     updateArrows();
   }
   initCardSlider('journeyTrack', 'journeyPrev', 'journeyNext', 'journey-card');
-  initCardSlider('activityTrack', 'activityPrev', 'activityNext', 'activity-card');
+  initCardSlider('activityTrack', 'activityPrev', 'activityNext', 'activity-card', true);
 
   // Activities slider — auto-advances on its own, marking whichever card is
   // currently snapped into view as "active" (which is what reveals its
   // description — see .activity-info p in style.css). Hovering the slider
   // pauses the autoplay, so a manual look never gets interrupted by a slide.
+  // Also click-and-drag (mouse) scrollable, same as a touch swipe.
   (function(){
     var track = document.getElementById('activityTrack');
     var slider = document.querySelector('.activities-slider');
@@ -123,6 +138,34 @@
     slider.addEventListener('mouseenter', stop);
     slider.addEventListener('mouseleave', start);
     slider.addEventListener('touchstart', stop, { passive: true });
+
+    // Click-and-drag with a mouse. .is-dragging swaps the cursor to
+    // "grabbing" (see style.css); a suppressed click after a real drag
+    // stops the card's own link from firing.
+    var isDown = false, dragged = false, startX = 0, startScroll = 0;
+    track.addEventListener('mousedown', function(e){
+      isDown = true;
+      dragged = false;
+      startX = e.pageX;
+      startScroll = track.scrollLeft;
+      track.classList.add('is-dragging');
+      stop();
+    });
+    window.addEventListener('mousemove', function(e){
+      if(!isDown) return;
+      var dx = e.pageX - startX;
+      if(Math.abs(dx) > 4) dragged = true;
+      track.scrollLeft = startScroll - dx;
+    });
+    window.addEventListener('mouseup', function(){
+      if(!isDown) return;
+      isDown = false;
+      track.classList.remove('is-dragging');
+      start();
+    });
+    track.addEventListener('click', function(e){
+      if(dragged){ e.preventDefault(); dragged = false; }
+    }, true);
 
     syncActive();
     start();
