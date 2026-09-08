@@ -674,12 +674,13 @@
     grid-template-columns:repeat(3,1fr);
     gap:20px;
   }
-  /* Full-bleed portrait image card, text sitting directly on the photo —
-     a serif display title (Playfair Display, upright — the same family
-     the site already uses in italic for copy accents) roughly a third of
-     the way down, then a short description, then the meta row. No white
-     card body, no boxed CTA; the CTA is a quiet underline that only shows
-     on hover. */
+  /* Full-bleed portrait image card, text sitting directly on the photo at
+     the bottom. Title + duration only — no description — matching the
+     rest of the site's overlay-card title treatment (.journey-title):
+     font-body, bold, uppercase, white. The CTA is a quiet underline that
+     only shows on hover/focus. The dark gradient is concentrated at the
+     bottom of the card (clear photo above) rather than washing the whole
+     image. */
   .tour-card{
     position:relative;
     display:block;
@@ -698,7 +699,7 @@
   .tour-card::after{
     content:"";
     position:absolute;inset:0;
-    background:linear-gradient(180deg, rgba(14,21,18,0.32) 0%, rgba(14,21,18,0.48) 45%, rgba(14,21,18,0.78) 100%);
+    background:linear-gradient(180deg, rgba(14,21,18,0) 0%, rgba(14,21,18,0) 55%, rgba(14,21,18,0.85) 100%);
   }
   .tour-card-body{
     position:absolute;
@@ -707,21 +708,14 @@
     padding:0 26px 28px;
   }
   .tour-card-body h3{
-    font-family:var(--font-italic);
-    font-style:normal;
+    font-family:var(--font-body);
     font-weight:700;
-    font-size:26px;
+    font-size:17px;
     letter-spacing:1px;
     text-transform:uppercase;
     color:var(--color-white);
-    line-height:1.2;
-    margin-bottom:12px;
-  }
-  .tour-card-body p{
-    font-size:13.5px;
-    line-height:1.6;
-    color:#EDE9DF;
-    margin-bottom:16px;
+    line-height:1.3;
+    margin-bottom:10px;
   }
   .tour-meta{
     display:flex;

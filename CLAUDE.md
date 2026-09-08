@@ -138,19 +138,26 @@ full-viewport title-only hero, **bottom-center**-aligned (`.hero--center`
 overrides `.hero--page`'s horizontal alignment only — it stays vertically
 bottom, just centered instead of left; both inner pages' heroes now use
 this). It also has a `.hero-mist` overlay — see the `.hero-mist` note below.
-Then a 6-card `.tour-grid`. `.tour-card` is now a **full-bleed portrait
-image card** again (the white-card-with-icons version was tried and
-reverted) — `aspect-ratio:3/5`, the whole card is an `<a>` with a `.bg` div
-for the hover zoom, and `.tour-card-body` sits at `top:30%` over the photo:
-an uppercase serif title (`.tour-card-body h3` uses `var(--font-italic)` —
-Playfair Display — set to `font-style:normal` for an upright serif; the
-Google Fonts `<link>` in every page's `<head>` was widened from
-`Playfair+Display:ital@1` to `ital,wght@0,700;1,400` specifically so the
-upright weight is available, not just italic), a short always-visible
-description, a compact `.tour-meta` row (duration + altitude only — season
-was dropped to match the reference layout), and a `.tour-cta` underline
-that only appears on hover/focus. No tag/index badge, no `.tour-divider`,
-no white card body — don't reintroduce those from memory. Its Dark CTA is
+Then a 6-card `.tour-grid`. `.tour-card` is a **full-bleed portrait image
+card** (the white-card-with-icons version was tried and reverted) —
+`aspect-ratio:3/5`, the whole card is an `<a>` with a `.bg` div for the
+hover zoom, and `.tour-card-body` sits at `bottom:0` over the photo (moved
+down from an earlier `top:30%`). Content is deliberately minimal: an
+uppercase title only (`.tour-card-body h3` — plain `var(--font-body)` bold
+uppercase white, same treatment as `.journey-title` on the homepage's
+overlay cards; an earlier version used an upright `var(--font-italic)`
+Playfair Display serif here instead, which was reverted to stay on-theme —
+the Google Fonts `<link>` in every page's `<head>` is still widened to
+`Playfair+Display:ital,wght@0,700;1,400` from the original `ital@1` in case
+an upright weight is wanted again later, but nothing currently uses it), a
+compact `.tour-meta` row (duration + altitude only), and a `.tour-cta`
+underline that only appears on hover/focus. **No description paragraph** —
+tried and removed; don't reintroduce a `<p>` in `.tour-card-body`. The dark
+gradient (`.tour-card::after`) is also concentrated at the bottom ~45% of
+the card now (`0% → 0% → 0.85` at 55%/100%) rather than washing the whole
+photo, since the text lives at the bottom. No tag/index badge, no
+`.tour-divider`, no white card body — don't reintroduce those from memory.
+Its Dark CTA is
 `.dark-cta.dark-cta--photo` (a background image + a light black overlay via
 `.dark-cta--photo` — homepage and About keep their own `.dark-cta` variants,
 see above; `.dark-cta-inner` text is forced white on this variant) with
