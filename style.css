@@ -196,48 +196,6 @@
 
   .header-right{display:flex;align-items:center;gap:28px;}
 
-  .lang-btn{
-    display:flex;
-    align-items:center;
-    gap:7px;
-    background:transparent;
-    border:1px solid rgba(255,255,255,0.4);
-    color:var(--color-white);
-    font-family:var(--font-body);
-    font-size:11px;
-    font-weight:600;
-    letter-spacing:0.14em;
-    text-transform:uppercase;
-    padding:8px 14px;
-    cursor:pointer;
-    transition:border-color .4s var(--ease), color .4s var(--ease), background .3s var(--ease);
-  }
-  .lang-btn svg{width:14px;height:14px;flex:none;}
-  .lang-btn:hover{background:rgba(255,255,255,0.12);}
-  header.scrolled .lang-btn{color:var(--color-primary-dark);border-color:rgba(22,48,42,0.35);}
-  header.scrolled .lang-btn:hover{background:rgba(22,48,42,0.08);}
-
-  /* Language dropdown — reuses the .nav-item / .nav-dropdown hover-bridge
-     pattern (see note above), just right-aligned since it's the last item
-     in the header instead of the first. */
-  .nav-dropdown--right{left:auto;right:0;}
-  .lang-option{
-    display:block;
-    width:100%;
-    background:none;
-    border:none;
-    text-align:left;
-    color:var(--color-primary-dark);
-    font-family:var(--font-body);
-    padding:10px 22px;
-    font-size:10.5px;
-    letter-spacing:0.1em;
-    white-space:nowrap;
-    cursor:pointer;
-  }
-  .lang-option:hover{background:rgba(176,141,87,0.1);color:var(--color-accent-gold-deep);}
-  .lang-option.is-active{color:var(--color-accent-gold-deep);font-weight:700;}
-
   .btn{
     display:inline-block;
     font-family:var(--font-body);
@@ -274,8 +232,107 @@
   }
   .btn-outline-green:hover{background:var(--color-primary-dark);color:var(--color-white);}
 
+  /* Hamburger button — hidden on desktop, shown only under 900px (see the
+     media query below). Its three bars morph into an × via .is-active. */
+  .hamburger-btn{
+    display:none;
+    flex-direction:column;
+    justify-content:center;
+    gap:5px;
+    width:26px;height:20px;
+    background:none;
+    border:none;
+    padding:0;
+    cursor:pointer;
+    position:relative;
+    z-index:1100;
+  }
+  .hamburger-btn span{
+    display:block;
+    width:100%;height:2px;
+    background:var(--color-white);
+    transition:background .4s var(--ease), transform .3s var(--ease), opacity .3s var(--ease);
+  }
+  header.scrolled .hamburger-btn span{background:var(--color-primary-dark);}
+  .hamburger-btn.is-active span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+  .hamburger-btn.is-active span:nth-child(2){opacity:0;}
+  .hamburger-btn.is-active span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+  /* Full-screen mobile nav panel, slid in from the right. Sits just below
+     the header's own z-index so the hamburger (now an ×) stays clickable
+     on top of it to close. */
+  .mobile-nav{
+    position:fixed;
+    inset:0;
+    z-index:900;
+    background:var(--color-primary-dark);
+    display:flex;
+    flex-direction:column;
+    padding:110px 32px 40px;
+    overflow-y:auto;
+    transform:translateX(100%);
+    transition:transform .45s var(--ease);
+  }
+  .mobile-nav.is-open{transform:translateX(0);}
+  .mobile-nav-close{
+    position:absolute;
+    top:26px;right:26px;
+    background:none;
+    border:none;
+    color:var(--color-white);
+    cursor:pointer;
+    padding:4px;
+  }
+  .mobile-nav-close svg{width:22px;height:22px;display:block;}
+  .mobile-nav nav{display:flex;flex-direction:column;}
+  .mobile-nav a,
+  .mobile-nav-toggle{
+    display:block;
+    width:100%;
+    background:none;
+    border:none;
+    border-bottom:1px solid rgba(255,255,255,0.14);
+    text-align:left;
+    font-family:var(--font-body);
+    font-size:15px;
+    font-weight:600;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--color-white);
+    padding:18px 0;
+    cursor:pointer;
+  }
+  .mobile-nav-sub{
+    max-height:0;
+    overflow:hidden;
+    padding-left:16px;
+    transition:max-height .35s var(--ease);
+  }
+  .mobile-nav-sub.is-open{max-height:400px;}
+  .mobile-nav-sub a{
+    border-bottom:none;
+    font-size:13px;
+    font-weight:500;
+    letter-spacing:0.06em;
+    color:#D9D3C3;
+    padding:12px 0;
+  }
+  .mobile-nav .btn{
+    margin-top:28px;
+    text-align:center;
+  }
+
   @media (max-width:900px){
     nav.primary-nav{display:none;}
+    header .inner{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+    .hamburger-btn{display:flex;}
+  }
+  @media (min-width:901px){
+    .mobile-nav{display:none;}
   }
 
   /* ================= HERO ================= */
@@ -724,7 +781,9 @@
   .activity-track::-webkit-scrollbar{display:none;}
   .activity-card{
     position:relative;
-    flex:0 0 100%;
+    /* 4 cards per view on desktop — matches the .activity-track gap (6px,
+       3 gaps between 4 cards). */
+    flex:0 0 calc(25% - 4.5px);
     height:520px;
     overflow:hidden;
     scroll-snap-align:start;
@@ -783,8 +842,11 @@
   }
 
   @media (max-width:900px){
-    .activity-card{height:420px;}
+    .activity-card{flex:0 0 calc(50% - 3px);height:420px;}
     .activities-slider .slider-arrow{display:none;}
+  }
+  @media (max-width:580px){
+    .activity-card{flex:0 0 100%;height:400px;}
   }
 
   /* ================= TESTIMONIALS ================= */
@@ -992,7 +1054,8 @@
     .explore-inner{flex-direction:column;align-items:flex-start;gap:36px;padding-left:26px;}
     .explore-left{flex:none;}
     .journey-card{flex:0 0 240px;height:460px;}
-    .slider-arrow{display:none;}
+    /* Arrows stay visible + clickable on mobile too (not touch-only) —
+       don't hide .slider-arrow here. */
   }
 
   /* ================= EXPLORE BHUTAN MAP ================= */
@@ -1302,52 +1365,36 @@
   }
 
   /* ================= WHY US ================= */
+  /* Redesigned as a full-width stat strip + a 2x2 grid of bordered reason
+     cards (same family as the About page's .value-card) — no image column,
+     no absolutely-positioned stat card. */
   .why-us{
     background:var(--color-white);
     padding:130px 0 120px;
   }
   .why-head{
     max-width:640px;
-    margin:0 auto 72px;
+    margin:0 auto 60px;
     text-align:center;
   }
   .why-head .lead{margin:0 auto;max-width:520px;}
 
-  .why-body{
-    display:grid;
-    grid-template-columns:0.85fr 1fr;
-    gap:100px;
-    align-items:center;
+  .why-stats-row{
+    display:flex;
+    justify-content:center;
+    gap:70px;
+    padding-bottom:56px;
+    margin-bottom:56px;
+    border-bottom:1px solid var(--color-rule);
   }
-
-  .why-visual{position:relative;}
-  .why-image{
-    aspect-ratio:4/5;
-    background:url('assets/images/himalayas.jpg') center/cover no-repeat;
-    position:relative;
-    overflow:hidden;
-  }
-  .why-image::after{
-    content:"";
-    position:absolute;inset:0;
-    background:linear-gradient(160deg, rgba(22,48,42,0.28), rgba(14,21,18,0.5));
-  }
-  .why-stat-card{
-    position:absolute;
-    left:-32px;
-    bottom:-32px;
-    background:var(--color-white);
-    border:1px solid var(--color-accent-gold);
-    padding:28px 34px;
-    box-shadow:0 20px 44px rgba(14,21,18,0.16);
-  }
+  .why-stat{text-align:center;}
   .why-stat-number{
     display:block;
     font-family:var(--font-display);
-    font-size:44px;
+    font-size:42px;
     color:var(--color-primary-dark);
     line-height:1;
-    margin-bottom:6px;
+    margin-bottom:8px;
   }
   .why-stat-label{
     display:block;
@@ -1357,35 +1404,36 @@
     letter-spacing:0.12em;
     text-transform:uppercase;
     color:var(--color-gray-muted);
-    max-width:150px;
   }
 
-  .why-reasons{display:flex;flex-direction:column;}
-  .why-reason{
-    display:flex;
-    gap:26px;
-    padding:26px 0;
-    border-bottom:1px solid var(--color-rule);
-    transition:padding-left .35s var(--ease);
+  .why-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:32px;
   }
-  .why-reason:first-child{padding-top:0;}
-  .why-reason:hover{padding-left:12px;}
+  .why-reason{
+    background:var(--color-white);
+    border:1px solid var(--color-rule);
+    padding:40px 36px;
+    transition:border-color .3s var(--ease), transform .3s var(--ease);
+  }
+  .why-reason:hover{border-color:var(--color-accent-gold);transform:translateY(-6px);}
   .why-reason-num{
+    display:block;
     font-family:var(--font-display);
-    font-size:28px;
+    font-size:36px;
     color:var(--color-accent-gold);
-    line-height:1.3;
-    flex-shrink:0;
-    width:44px;
+    line-height:1;
+    margin-bottom:20px;
   }
   .why-reason h3{
     font-family:var(--font-body);
-    font-size:16px;
+    font-size:17px;
     font-weight:700;
     letter-spacing:0.3px;
     text-transform:none;
     color:var(--color-primary-dark);
-    margin-bottom:8px;
+    margin-bottom:10px;
   }
   .why-reason p{
     font-size:14px;
@@ -1395,11 +1443,13 @@
 
   @media (max-width:900px){
     .why-us{padding:80px 0;}
-    .why-head{margin-bottom:52px;}
-    .why-body{grid-template-columns:1fr;gap:64px;}
-    .why-visual{max-width:340px;margin:0 auto;}
-    .why-stat-card{left:-20px;bottom:-24px;padding:20px 24px;}
-    .why-stat-number{font-size:34px;}
+    .why-head{margin-bottom:48px;}
+    .why-stats-row{gap:40px;padding-bottom:44px;margin-bottom:44px;}
+    .why-stat-number{font-size:32px;}
+    .why-grid{grid-template-columns:1fr;gap:20px;}
+  }
+  @media (max-width:480px){
+    .why-stats-row{gap:24px;flex-wrap:wrap;}
   }
 
   /* ================= BLOG ================= */

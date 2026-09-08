@@ -1,3 +1,23 @@
+  // Hero video — the markup already has autoplay/muted/playsinline, which
+  // covers most mobile browsers, but some (older Android WebViews, in-app
+  // browsers like Facebook/Instagram) still won't autoplay without an
+  // explicit .play() call, or need the `muted` property set in JS rather
+  // than just the HTML attribute. This makes sure it actually starts, and
+  // retries once on the first touch/click if the initial attempt was
+  // blocked.
+  (function(){
+    var video = document.querySelector('.hero-video');
+    if(!video) return;
+    video.muted = true;
+    function tryPlay(){
+      var p = video.play();
+      if(p && p.catch) p.catch(function(){});
+    }
+    tryPlay();
+    document.addEventListener('touchstart', tryPlay, { once: true, passive: true });
+    document.addEventListener('click', tryPlay, { once: true });
+  })();
+
   // Header scroll state
   (function(){
     var header = document.getElementById('siteHeader');
@@ -608,30 +628,51 @@
     });
   })();
 
-  // Language dropdown — visual only, no i18n content exists yet. Clicking
-  // an option just swaps the header's language code and remembers the
-  // choice for next visit.
+  // Mobile hamburger menu — the header's own nav links are display:none
+  // under 900px (see style.css), so this is the only way to navigate on
+  // mobile. The hamburger button itself morphs into a close (×) icon via
+  // its .is-active class; the panel has its own explicit close button too.
   (function(){
-    var codeEl = document.getElementById('langCode');
-    var options = document.querySelectorAll('.lang-option');
-    if(!codeEl || !options.length) return;
+    var btn = document.getElementById('hamburgerBtn');
+    var panel = document.getElementById('mobileNav');
+    var closeBtn = document.getElementById('mobileNavClose');
+    if(!btn || !panel) return;
 
-    var saved = null;
-    try { saved = window.localStorage.getItem('altara-lang'); } catch(e){}
-    if(saved){
-      options.forEach(function(opt){
-        opt.classList.toggle('is-active', opt.getAttribute('data-code') === saved);
-      });
-      codeEl.textContent = saved;
+    function open(){
+      panel.classList.add('is-open');
+      btn.classList.add('is-active');
+      btn.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    }
+    function close(){
+      panel.classList.remove('is-open');
+      btn.classList.remove('is-active');
+      btn.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
     }
 
-    options.forEach(function(opt){
-      opt.addEventListener('click', function(){
-        var code = opt.getAttribute('data-code');
-        options.forEach(function(o){ o.classList.remove('is-active'); });
-        opt.classList.add('is-active');
-        codeEl.textContent = code;
-        try { window.localStorage.setItem('altara-lang', code); } catch(e){}
+    btn.addEventListener('click', function(){
+      if(panel.classList.contains('is-open')) close(); else open();
+    });
+    if(closeBtn) closeBtn.addEventListener('click', close);
+
+    // Clicking any real link closes the panel and lets navigation proceed.
+    panel.querySelectorAll('nav > a').forEach(function(a){
+      a.addEventListener('click', close);
+    });
+
+    // "Experiences" sub-menu expands inline within the panel.
+    var subToggle = panel.querySelector('.mobile-nav-toggle');
+    var sub = panel.querySelector('.mobile-nav-sub');
+    if(subToggle && sub){
+      subToggle.addEventListener('click', function(){
+        var isOpen = sub.classList.toggle('is-open');
+        subToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
       });
+      sub.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', close); });
+    }
+
+    window.addEventListener('resize', function(){
+      if(window.innerWidth > 900) close();
     });
   })();

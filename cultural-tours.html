@@ -17,6 +17,7 @@
 <header id="siteHeader">
   <div class="container inner">
     <nav class="primary-nav nav-left">
+      <a href="index.html">Home</a>
       <div class="nav-item">
         <a href="index.html#journeys">Experiences</a>
         <span class="nav-caret">
@@ -43,31 +44,34 @@
         <a href="about.html">About</a>
         <a href="#enquire">Enquire Now</a>
       </nav>
-      <div class="nav-item lang-item">
-        <button type="button" class="lang-btn" id="langToggle" aria-label="Change language" aria-haspopup="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="9"/>
-            <path d="M3 12h18"/>
-            <path d="M12 3c2.5 2.6 3.8 5.7 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.7-3.8-9s1.3-6.4 3.8-9z"/>
-          </svg>
-          <span id="langCode">EN</span>
-        </button>
-        <span class="nav-caret">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
-        </span>
-        <div class="nav-dropdown nav-dropdown--right">
-          <div class="nav-dropdown-panel">
-            <button type="button" class="lang-option is-active" data-code="EN">English</button>
-            <button type="button" class="lang-option" data-code="DZ">Dzongkha (རྫོང་ཁ)</button>
-            <button type="button" class="lang-option" data-code="FR">Français</button>
-            <button type="button" class="lang-option" data-code="DE">Deutsch</button>
-            <button type="button" class="lang-option" data-code="JA">日本語</button>
-          </div>
-        </div>
-      </div>
     </div>
+    <button type="button" class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false" aria-controls="mobileNav">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </header>
+
+<!-- ================= MOBILE NAV ================= -->
+<div class="mobile-nav" id="mobileNav">
+  <button type="button" class="mobile-nav-close" id="mobileNavClose" aria-label="Close menu">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
+  <nav>
+    <a href="index.html">Home</a>
+    <button type="button" class="mobile-nav-toggle" aria-expanded="false">Experiences</button>
+    <div class="mobile-nav-sub">
+      <a href="cultural-tours.html">Cultural Tours</a>
+      <a href="index.html#journeys">Trekking Tours</a>
+      <a href="index.html#journeys">Festivities</a>
+      <a href="index.html#journeys">Activities</a>
+      <a href="index.html#journeys">Luxury Tours</a>
+    </div>
+    <a href="index.html#why">Information</a>
+    <a href="index.html#blog">Blog</a>
+    <a href="about.html">About</a>
+    <a href="#enquire" class="btn btn-solid-gold">Enquire Now</a>
+  </nav>
+</div>
 
 <!-- ================= HERO ================= -->
 <section class="hero hero--cultural hero--page">
