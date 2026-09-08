@@ -1365,66 +1365,72 @@
   }
 
   /* ================= WHY US ================= */
-  /* Redesigned as a full-width stat strip + a 2x2 grid of bordered reason
-     cards (same family as the About page's .value-card) — no image column,
-     no absolutely-positioned stat card. */
+  /* Redesigned as an asymmetric two-column split — a fixed intro column
+     (eyebrow/heading/lead/CTA) beside a vertical list of reasons — rather
+     than a centered head + stat strip + card grid. Deliberately carries no
+     "years of experience" or "N dzongkhags covered" style claim. */
   .why-us{
     background:var(--color-white);
     padding:130px 0 120px;
   }
-  .why-head{
-    max-width:640px;
-    margin:0 auto 60px;
-    text-align:center;
-  }
-  .why-head .lead{margin:0 auto;max-width:520px;}
-
-  .why-stats-row{
-    display:flex;
-    justify-content:center;
-    gap:70px;
-    padding-bottom:56px;
-    margin-bottom:56px;
-    border-bottom:1px solid var(--color-rule);
-  }
-  .why-stat{text-align:center;}
-  .why-stat-number{
-    display:block;
-    font-family:var(--font-display);
-    font-size:42px;
-    color:var(--color-primary-dark);
-    line-height:1;
-    margin-bottom:8px;
-  }
-  .why-stat-label{
-    display:block;
-    font-family:var(--font-body);
-    font-size:11px;
-    font-weight:700;
-    letter-spacing:0.12em;
-    text-transform:uppercase;
-    color:var(--color-gray-muted);
-  }
-
-  .why-grid{
+  .why-layout{
     display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:32px;
+    grid-template-columns:0.8fr 1.2fr;
+    gap:90px;
+    align-items:start;
   }
+  .why-head{position:sticky;top:140px;}
+  .why-head .lead{margin-top:4px;max-width:400px;}
+  .why-link{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    margin-top:24px;
+    font-family:var(--font-body);
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:1.2px;
+    text-transform:uppercase;
+    color:var(--color-primary-dark);
+    border-bottom:1px solid var(--color-primary-dark);
+    padding-bottom:4px;
+    transition:color .3s var(--ease), border-color .3s var(--ease);
+  }
+  .why-link .arrow{display:inline-block;transition:transform .3s var(--ease);}
+  .why-link:hover{color:var(--color-accent-gold-deep);border-color:var(--color-accent-gold-deep);}
+  .why-link:hover .arrow{transform:translateX(4px);}
+
+  .why-grid{display:flex;flex-direction:column;}
   .why-reason{
-    background:var(--color-white);
-    border:1px solid var(--color-rule);
-    padding:40px 36px;
-    transition:border-color .3s var(--ease), transform .3s var(--ease);
+    position:relative;
+    padding:28px 0 28px 20px;
+    border-bottom:1px solid var(--color-rule);
+    transition:padding-left .35s var(--ease);
   }
-  .why-reason:hover{border-color:var(--color-accent-gold);transform:translateY(-6px);}
+  .why-reason:first-child{padding-top:0;}
+  .why-reason:last-child{border-bottom:none;}
+  .why-reason::before{
+    content:"";
+    position:absolute;
+    left:0;top:28px;bottom:28px;
+    width:2px;
+    background:var(--color-rule);
+    transition:background .3s var(--ease);
+  }
+  .why-reason:first-child::before{top:0;}
+  .why-reason:hover{padding-left:32px;}
+  .why-reason:hover::before{background:var(--color-accent-gold);}
+  .why-reason-head{
+    display:flex;
+    align-items:baseline;
+    gap:16px;
+    margin-bottom:10px;
+  }
   .why-reason-num{
-    display:block;
     font-family:var(--font-display);
-    font-size:36px;
+    font-size:22px;
     color:var(--color-accent-gold);
     line-height:1;
-    margin-bottom:20px;
   }
   .why-reason h3{
     font-family:var(--font-body);
@@ -1433,23 +1439,19 @@
     letter-spacing:0.3px;
     text-transform:none;
     color:var(--color-primary-dark);
-    margin-bottom:10px;
   }
   .why-reason p{
     font-size:14px;
     color:var(--color-body);
     line-height:1.7;
+    padding-left:38px;
   }
 
   @media (max-width:900px){
     .why-us{padding:80px 0;}
-    .why-head{margin-bottom:48px;}
-    .why-stats-row{gap:40px;padding-bottom:44px;margin-bottom:44px;}
-    .why-stat-number{font-size:32px;}
-    .why-grid{grid-template-columns:1fr;gap:20px;}
-  }
-  @media (max-width:480px){
-    .why-stats-row{gap:24px;flex-wrap:wrap;}
+    .why-layout{grid-template-columns:1fr;gap:48px;}
+    .why-head{position:static;text-align:center;}
+    .why-head .lead{margin-left:auto;margin-right:auto;}
   }
 
   /* ================= BLOG ================= */
