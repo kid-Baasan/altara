@@ -20,9 +20,21 @@ Altara/
 │                                     "Known inconsistency" below)
 └── assets/
     └── images/
-        ├── logo.png               # Dark logo, for light backgrounds
-        ├── logo white.png         # White logo, for dark/overlay backgrounds
-        └── *.jpg                  # ~103 Bhutan travel photos, flat, no subfolders
+        ├── logo/                  # logo.png (dark, light bg) + logo white.png (light, dark/overlay bg)
+        ├── video/                 # hero background video
+        ├── cloud.png              # .hero-mist overlay tile (see the .hero-mist note)
+        └── image/                 # ~255 Bhutan travel photos — every actual photo
+                                      reference in the site lives under this
+                                      subfolder now (assets/images/image/<file>.jpg),
+                                      NOT directly in assets/images/. The photo set
+                                      was fully replaced at this path on 2026-09-09;
+                                      every reference was re-picked from the new set
+                                      with no two logical image slots sharing the
+                                      same file (bg + .bg pairs on the same card are
+                                      the only intentional 2x reuse), and every
+                                      hero/full-bleed background is landscape. If
+                                      the folder is ever moved/renamed again, that's
+                                      a site-wide find-and-replace, not a one-off.
 ```
 
 `style.css` and `script.js` are shared across every page — there is no
@@ -47,12 +59,19 @@ early `if(!el) return;` inside its own IIFE so it's harmless to include
    full section further down the page, not a tour-package category. On
    mobile the same 4 links live in `.mobile-nav-sub`. A `.lang-btn`
    placeholder sits in the header (no i18n wired up yet).
-2. **Hero** — full-bleed video (`taktshang.jpg` poster), left with just the
-   headline + `.hero-sub` — no `.hero-ctas` button row (removed). `.hero` is
+2. **Hero** — full-bleed video (`taktshang.jpg` poster), bottom-center
+   aligned (`.hero`'s own `align-items:flex-end`/`justify-content:center`,
+   so more of the video shows above the text) with just the headline +
+   `.hero-sub` — no `.hero-ctas` button row (removed). `.hero` is
    reused on inner pages with two modifiers: `.hero--about`/`.hero--cultural`
-   etc. set the background image, and `.hero--page` turns the same
-   full-`100vh` hero into a bottom-left page title (see the `.hero--page`
-   note below) instead of a centered one.
+   pick the section's layout treatment, but neither sets the background image
+   itself anymore — each inner page sets its own hero photo inline via
+   `style="background-image:url(...)"` directly on the `.hero` element (in
+   `about.html`/`cultural-tours.html`), matching the inline `background-image`
+   pattern used by `.tour-card`/`.journey-card`, so swapping an inner page's
+   hero photo is a one-line HTML edit rather than a `style.css` lookup.
+   `.hero--page` turns the same full-`100vh` hero into a bottom-left page
+   title (see the `.hero--page` note below) instead of a centered one.
 3. **Explore Our Experiences slider** (`id="journeys"`, eyebrow "Plan Your
    Trip") — dark full-bleed horizontal card slider (scroll-snap + JS arrow
    controls) sitting directly under the hero. Exactly 4 cards, one per
@@ -93,23 +112,20 @@ early `if(!el) return;` inside its own IIFE so it's harmless to include
 8. **Why Altara** — image/copy split with bullet list
 9. **Blog** — teaser cards
 10. **FAQ** — accordion
-11. **Dark CTA** (`id="enquire"`) — `.dark-cta.dark-cta--photo.dark-cta--dark-photo`:
-    a `buddha point.jpg` background with a heavy black overlay (`.dark-cta--dark-photo`
-    stacks a darker `::after` on top of the lighter `.dark-cta--photo` one
-    used by Cultural Tours — don't change the shared `.dark-cta--photo`
-    opacity to darken this one, add/adjust `.dark-cta--dark-photo` instead).
-    Content is an `.eyebrow--on-dark` ("Begin Your Story"), a **plain**
-    `<h2>` ("Your **Bhutan** Awaits" — the middle word wrapped in `.accent`
-    for gold, everything else the same uppercase League Gothic every other
-    h1/h2/h3 on the site uses) — an earlier version used a custom mixed-case
-    `.dark-cta-title` class here; that was reverted to stay on-theme, don't
-    reintroduce it — a description, and two CTAs:
-    `.btn-solid-gold` (text forced dark via `.dark-cta--dark-photo
-    .btn-solid-gold`, scoped so it doesn't affect the plain gold button on
-    About's own Dark CTA) and a new `.btn-outline-gold` linking to the same
-    `wa.me/9752333456` WhatsApp number used on Cultural Tours. About's Dark
-    CTA is untouched — still the plain dark-green/gold-glow `.dark-cta` with
-    `.btn-outline-white`/`.btn-solid-gold`.
+11. **Dark CTA** (`id="enquire"`) — `.dark-cta.dark-cta--photo`, same pattern
+    and markup as Cultural Tours' Dark CTA (see below), just its own
+    `buddha point.jpg` background and copy: a plain `<h2>` ("Begin Your
+    Story", no eyebrow, no `.accent` span), a description, and the same
+    `.contact-pill` WhatsApp (`wa.me/9752333456`)/email (`hello@altara.travel`)
+    pair Cultural Tours uses — no `.btn`/`.btn-solid-gold`/`.btn-outline-gold`
+    buttons here anymore (the earlier button-pair version, and the
+    `.dark-cta--dark-photo` heavier-overlay modifier it needed, were
+    replaced so homepage matches Cultural Tours' design exactly, just with a
+    different background image — don't reintroduce either from memory).
+    An earlier version also used a custom mixed-case `.dark-cta-title` class
+    for the heading; that stays reverted too, don't bring it back. About's
+    Dark CTA is untouched — still the plain dark-green/gold-glow `.dark-cta`
+    with `.btn-outline-white`/`.btn-solid-gold`.
 12. **Footer** — 4-column dark footer
 
 (The old **Editorial** and **Press strip** sections have been removed
@@ -123,8 +139,10 @@ that only exists on the homepage (`#journeys`, `#why`, `#blog`) is written as
 same-page anchor since About has its own dark-CTA section.
 
 Sections: full-`100vh` image hero (`.hero.hero--about.hero--page.hero--center`,
-same bottom-center-title + `.hero-mist` cloud overlay as cultural-tours.html
-— see the `.hero--center`/`.hero-mist` notes below) → Our Story (`.about`) →
+background image set inline on the `.hero` element (see the Hero note
+above), same bottom-center-title + `.hero-mist` cloud overlay as
+cultural-tours.html — see the `.hero--center`/`.hero-mist` notes below) →
+Our Story (`.about`) →
 Our Philosophy (`.about.about--reverse`, mirrors the layout) → Values
 (`.values-section`, 3 cards) → Team (`.team-section`, 4 cards with
 gold-initial avatars — there are no real team photos in `assets/images/`,
@@ -134,7 +152,9 @@ so avatars are deliberately initials-only; swap in real photos via the same
 ### cultural-tours.html
 
 Same header/footer pattern as `about.html`. `.hero.hero--cultural.hero--page.hero--center`
-full-viewport title-only hero, **bottom-center**-aligned (`.hero--center`
+full-viewport title-only hero, its background image set inline via
+`style="background-image:url(...)"` on the `.hero` element (not in
+`style.css` like `.hero--about` — see the Hero note above), **bottom-center**-aligned (`.hero--center`
 overrides `.hero--page`'s horizontal alignment only — it stays vertically
 bottom, just centered instead of left; both inner pages' heroes now use
 this). It also has a `.hero-mist` overlay — see the `.hero-mist` note below.
@@ -158,11 +178,12 @@ the card now (`0% → 0% → 0.85` at 55%/100%) rather than washing the whole
 photo, since the text lives at the bottom. No tag/index badge, no
 `.tour-divider`, no white card body — don't reintroduce those from memory.
 Its Dark CTA is
-`.dark-cta.dark-cta--photo` (a background image + a light black overlay via
-`.dark-cta--photo` — homepage and About keep their own `.dark-cta` variants,
-see above; `.dark-cta-inner` text is forced white on this variant) with
-`.contact-pill` WhatsApp/email links (white border on hover, not gold)
-instead of the usual `.btn` pair. The header's "Experiences" dropdown
+`.dark-cta.dark-cta--photo` (a background image + a black overlay via
+`.dark-cta--photo`'s shared `::after` — homepage now reuses this same
+variant/markup with its own background image, see above; About keeps its
+own plain `.dark-cta`; `.dark-cta-inner` text is forced white on this
+variant) with `.contact-pill` WhatsApp/email links (white border on hover,
+not gold) instead of the usual `.btn` pair. The header's "Experiences" dropdown
 "Cultural Tours" item and the footer's "Cultural Travelers" link both point
 here from every page — keep those in sync if this page is ever renamed or
 removed. This is the template to copy for the other dropdown items
@@ -200,11 +221,14 @@ layers now share one direction. A `min-width:901px` media query lengthens
 the duration a lot (65s/100s → 150s/230s) because the same %-based
 `translateX` covers far more pixels/second on a wide desktop viewport than
 on mobile — don't "fix" desktop speed by changing the base (mobile)
-duration, add/adjust the desktop override instead. Used on both
-`about.html` and `cultural-tours.html`. `prefers-reduced-motion` freezes
-both layers in place rather than removing them. Copy this same 3-element
-structure (`.hero-mist` + two `.hero-mist-layer` children) if another hero
-needs the same drifting-mist look.
+duration, add/adjust the desktop override instead. Used on the two inner-page
+heroes only — `about.html` and `cultural-tours.html` — **not** the homepage
+hero (`index.html`), which was tried and then removed since the video
+background there didn't need it; don't reintroduce it on `index.html` without
+being asked. `prefers-reduced-motion` freezes both layers in place rather
+than removing them. Copy this same 3-element structure (`.hero-mist` + two
+`.hero-mist-layer` children) if another hero needs the same drifting-mist
+look.
 
 ### Nav dropdown — don't reintroduce the hover gap
 
@@ -257,9 +281,16 @@ guidelines doc has not been updated to match.
   change values there, not at each usage site. `--color-cream` was removed
   deliberately (all section backgrounds are now plain white with
   border-based separation) — don't reintroduce a cream/off-white token.
-- Reference real files only from `assets/images/` — filenames are
-  inconsistent (mixed case, spaces, a couple of typos like
-  `punakha.1jpg.jpg`) — copy them byte-exact, never invent a filename.
+- Reference real files only from `assets/images/image/` (not `assets/images/`
+  directly — that only holds `logo/`, `video/`, and `cloud.png` now).
+  Filenames are wildly inconsistent (mixed case, spaces, camera-default names
+  like `DSC00561.jpg`/`LLL03236.jpg`, `.JPG`/`.jpeg` mixed in) — copy them
+  byte-exact, never invent or guess a filename; `ls` the folder or check the
+  existing `<img>`/`background-image` references first. Every image already
+  in use across the three pages is unique to its one slot (see the `assets/`
+  tree comment above) — when swapping or adding an image, keep it that way
+  rather than reusing a file that's already placed somewhere else on the
+  site.
 - Two logo variants exist for a reason: `logo white.png` on dark/transparent
   surfaces, `logo.png` on light/white surfaces.
 - When adding a new page, copy the header/footer markup from an existing
