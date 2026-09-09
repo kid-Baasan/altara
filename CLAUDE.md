@@ -20,9 +20,21 @@ Altara/
 │                                     "Known inconsistency" below)
 └── assets/
     └── images/
-        ├── logo.png               # Dark logo, for light backgrounds
-        ├── logo white.png         # White logo, for dark/overlay backgrounds
-        └── *.jpg                  # ~103 Bhutan travel photos, flat, no subfolders
+        ├── logo/                  # logo.png (dark, light bg) + logo white.png (light, dark/overlay bg)
+        ├── video/                 # hero background video
+        ├── cloud.png              # .hero-mist overlay tile (see the .hero-mist note)
+        └── image/                 # ~255 Bhutan travel photos — every actual photo
+                                      reference in the site lives under this
+                                      subfolder now (assets/images/image/<file>.jpg),
+                                      NOT directly in assets/images/. The photo set
+                                      was fully replaced at this path on 2026-09-09;
+                                      every reference was re-picked from the new set
+                                      with no two logical image slots sharing the
+                                      same file (bg + .bg pairs on the same card are
+                                      the only intentional 2x reuse), and every
+                                      hero/full-bleed background is landscape. If
+                                      the folder is ever moved/renamed again, that's
+                                      a site-wide find-and-replace, not a one-off.
 ```
 
 `style.css` and `script.js` are shared across every page — there is no
@@ -257,9 +269,16 @@ guidelines doc has not been updated to match.
   change values there, not at each usage site. `--color-cream` was removed
   deliberately (all section backgrounds are now plain white with
   border-based separation) — don't reintroduce a cream/off-white token.
-- Reference real files only from `assets/images/` — filenames are
-  inconsistent (mixed case, spaces, a couple of typos like
-  `punakha.1jpg.jpg`) — copy them byte-exact, never invent a filename.
+- Reference real files only from `assets/images/image/` (not `assets/images/`
+  directly — that only holds `logo/`, `video/`, and `cloud.png` now).
+  Filenames are wildly inconsistent (mixed case, spaces, camera-default names
+  like `DSC00561.jpg`/`LLL03236.jpg`, `.JPG`/`.jpeg` mixed in) — copy them
+  byte-exact, never invent or guess a filename; `ls` the folder or check the
+  existing `<img>`/`background-image` references first. Every image already
+  in use across the three pages is unique to its one slot (see the `assets/`
+  tree comment above) — when swapping or adding an image, keep it that way
+  rather than reusing a file that's already placed somewhere else on the
+  site.
 - Two logo variants exist for a reason: `logo white.png` on dark/transparent
   surfaces, `logo.png` on light/white surfaces.
 - When adding a new page, copy the header/footer markup from an existing

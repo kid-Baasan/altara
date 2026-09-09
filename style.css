@@ -343,7 +343,7 @@
     display:flex;
     align-items:center;
     justify-content:center;
-    background:url('assets/images/taktshang.jpg') center 32%/cover no-repeat;
+    background:url('assets/images/image/By Marcus Westberg 1.jpg') center 32%/cover no-repeat;
     overflow:hidden;
   }
   .hero-video{
@@ -393,11 +393,11 @@
   /* Secondary-page hero variant — same full-viewport treatment as the
      homepage hero, different image and no video/CTA row. */
   .hero--about{
-    background:url('assets/images/taktshang1.jpg') center 38%/cover no-repeat;
+    background:url('assets/images/image/Haa by Marcus Westberg24.jpg') center 38%/cover no-repeat;
   }
   .hero--about .hero-content{max-width:760px;}
   .hero--cultural{
-    background:url('assets/images/paro tshechu.jpg') center 40%/cover no-repeat;
+    background:url('assets/images/image/paro attractions header.jpg') center 40%/cover no-repeat;
   }
 
   /* Page-title hero — the hero-content acts as the page title, anchored
@@ -960,7 +960,7 @@
     content:"";
     position:absolute;
     inset:-20px;
-    background:url('assets/images/bumthang view.jpg') center/cover no-repeat;
+    background:url('assets/images/image/Thimphu Attractions Header.jpg') center/cover no-repeat;
     filter:blur(10px) brightness(0.45) saturate(0.9);
     transform:scale(1.08);
     z-index:0;
