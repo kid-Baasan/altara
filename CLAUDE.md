@@ -212,11 +212,12 @@ layers now share one direction. A `min-width:901px` media query lengthens
 the duration a lot (65s/100s → 150s/230s) because the same %-based
 `translateX` covers far more pixels/second on a wide desktop viewport than
 on mobile — don't "fix" desktop speed by changing the base (mobile)
-duration, add/adjust the desktop override instead. Used on both
-`about.html` and `cultural-tours.html`. `prefers-reduced-motion` freezes
-both layers in place rather than removing them. Copy this same 3-element
-structure (`.hero-mist` + two `.hero-mist-layer` children) if another hero
-needs the same drifting-mist look.
+duration, add/adjust the desktop override instead. Used on all three
+heroes now — `index.html`, `about.html`, and `cultural-tours.html`.
+`prefers-reduced-motion` freezes both layers in place rather than removing
+them. Copy this same 3-element structure (`.hero-mist` + two
+`.hero-mist-layer` children) if another hero needs the same drifting-mist
+look.
 
 ### Nav dropdown — don't reintroduce the hover gap
 
