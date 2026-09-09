@@ -341,7 +341,7 @@
     height:100vh;
     min-height:600px;
     display:flex;
-    align-items:center;
+    align-items:flex-end;
     justify-content:center;
     background:url('assets/images/image/By Marcus Westberg 1.jpg') center 32%/cover no-repeat;
     overflow:hidden;
@@ -366,7 +366,10 @@
     z-index:2;
     text-align:center;
     max-width:920px;
-    padding:0 24px;
+    padding:0 24px 90px;
+  }
+  @media (max-width:580px){
+    .hero-content{padding:0 24px 60px;}
   }
   .hero-content h1{
     font-size:clamp(24px,3.6vw,40px);
@@ -392,13 +395,13 @@
   }
   /* Secondary-page hero variant — same full-viewport treatment as the
      homepage hero, different image and no video/CTA row. */
-  .hero--about{
-    background:url('assets/images/image/Haa by Marcus Westberg24.jpg') center 38%/cover no-repeat;
-  }
   .hero--about .hero-content{max-width:760px;}
-  .hero--cultural{
-    background:url('assets/images/image/paro attractions header.jpg') center 40%/cover no-repeat;
-  }
+  /* Neither .hero--about nor .hero--cultural sets a background here anymore —
+     about.html and cultural-tours.html each set their own background image
+     inline via style="background-image:url(...)" on the .hero element
+     itself, matching the inline background-image pattern used by
+     .tour-card/.journey-card elsewhere. This makes swapping an inner page's
+     hero photo a one-line HTML edit instead of a style.css lookup. */
 
   /* Page-title hero — the hero-content acts as the page title, anchored
      bottom-left instead of centered. Used on inner pages (About, Cultural
@@ -1701,7 +1704,8 @@
 
   /* Photo variant — a background image + black overlay instead of the
      plain dark green + gold glow, used where the CTA needs a scenic photo
-     behind it (e.g. cultural-tours.html). */
+     behind it (index.html and cultural-tours.html; each page supplies its
+     own background-image and copy, same overlay/markup pattern). */
   .dark-cta--photo{
     background-size:cover;
     background-position:center;
@@ -1712,19 +1716,10 @@
     position:absolute;
     inset:0;
     z-index:1;
-    background:rgba(0,0,0,0.38);
+    background:rgba(0,0,0,0.48);
   }
   .dark-cta--photo .dark-cta-inner{color:var(--color-white);}
-
-  /* Heavier-overlay photo variant — homepage's "Begin Your Story" CTA
-     needs the background image much darker than the Cultural Tours one,
-     so this stacks on top of .dark-cta--photo rather than changing its
-     shared overlay opacity. */
-  .dark-cta--dark-photo::after{background:rgba(0,0,0,0.62);}
-  /* Same h2 the rest of the site uses (League Gothic, uppercase, white) —
-     the only deviation is a gold accent on one word via .accent. */
   .dark-cta h2 .accent{color:var(--color-accent-gold);}
-  .dark-cta--dark-photo .btn-solid-gold{color:var(--color-primary-dark);}
   .btn-outline-gold{
     background:transparent;
     color:var(--color-accent-gold);
