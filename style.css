@@ -1795,3 +1795,768 @@
     .footer-grid{grid-template-columns:1fr;}
     .container{padding-left:26px;padding-right:26px;}
   }
+
+  /* ================= INFORMATION PAGES ================= */
+  /* Shared "lead" intro paragraph under a page hero — used at the top of
+     about-bhutan.html, tariff.html and faq.html before their own content. */
+  .info-lead{
+    background:var(--color-white);
+    padding:130px 0 20px;
+    text-align:center;
+  }
+  .info-lead .container{max-width:760px;}
+  .info-lead p{font-size:15px;line-height:1.85;color:var(--color-body);margin-top:26px;}
+
+  /* Modifier for a second .fact-section stacked directly under another
+     content section on the same page (About Bhutan's "Best Time To
+     Visit"), which needs less top padding than the page's first one. */
+  .fact-section--tight{padding-top:20px;}
+
+  /* About Bhutan: Quick Facts grid — same bordered-card/gold-hover language
+     as .value-card, sized for a short value + label pair instead of a
+     numbered paragraph. */
+  .fact-section{background:var(--color-white);padding:80px 0 60px;}
+  .fact-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:24px;
+  }
+  .fact-card{
+    background:var(--color-white);
+    border:1px solid var(--color-rule);
+    padding:32px 26px;
+    text-align:left;
+    transition:border-color .3s var(--ease), transform .3s var(--ease);
+  }
+  .fact-card:hover{border-color:var(--color-accent-gold);transform:translateY(-6px);}
+  .fact-value{
+    font-family:var(--font-display);
+    font-size:24px;
+    letter-spacing:0.5px;
+    text-transform:uppercase;
+    color:var(--color-primary-dark);
+    line-height:1.2;
+    margin-bottom:10px;
+  }
+  .fact-label{
+    font-family:var(--font-body);
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--color-gray-muted);
+  }
+  @media (max-width:900px){
+    .fact-grid{grid-template-columns:repeat(2,1fr);gap:16px;}
+  }
+  @media (max-width:580px){
+    .fact-grid{grid-template-columns:1fr;}
+  }
+
+  /* About Bhutan: Best Time to Visit — reuses .bhutan-fact-card's own
+     number/label styling (already built for the Explore Bhutan map sidebar)
+     in a plain 4-up grid instead of that section's narrow sidebar column. */
+  .season-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:16px;
+  }
+  @media (max-width:900px){
+    .season-grid{grid-template-columns:repeat(2,1fr);}
+  }
+
+  /* Tariff: SDF pricing cards */
+  .tariff-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:32px;
+  }
+  .tariff-card{
+    background:var(--color-white);
+    border:1px solid var(--color-rule);
+    padding:48px 30px;
+    text-align:center;
+    transition:border-color .3s var(--ease), transform .3s var(--ease);
+  }
+  .tariff-card:hover{border-color:var(--color-accent-gold);transform:translateY(-6px);}
+  .tariff-card--featured{border-color:var(--color-accent-gold);}
+  .tariff-price{
+    font-family:var(--font-display);
+    font-size:46px;
+    color:var(--color-primary-dark);
+    line-height:1;
+    margin:16px 0 8px;
+  }
+  .tariff-price sup{
+    font-size:20px;
+    margin-right:2px;
+  }
+  .tariff-price span{
+    display:block;
+    font-family:var(--font-body);
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--color-gray-muted);
+    margin-top:6px;
+  }
+  .tariff-card h3{margin-bottom:4px;}
+  .tariff-card p{font-size:13.5px;color:var(--color-body);line-height:1.7;margin-top:14px;}
+  @media (max-width:900px){
+    .tariff-grid{grid-template-columns:1fr;gap:20px;}
+  }
+
+  /* Tariff: What's Included / Not Included two-column checklist */
+  .tariff-includes{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:0 60px;
+    margin-top:90px;
+  }
+  .tariff-includes h3{margin-bottom:22px;}
+  .tariff-includes li{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:14px 0;
+    border-bottom:1px solid var(--color-rule);
+    font-size:14px;
+    color:var(--color-body);
+  }
+  .tariff-includes li svg{flex-shrink:0;width:16px;height:16px;color:var(--color-accent-gold);}
+  .tariff-includes--exclude li svg{color:var(--color-gray-muted);}
+  @media (max-width:900px){
+    .tariff-includes{grid-template-columns:1fr;gap:50px;margin-top:60px;}
+  }
+
+  /* Tariff: visa/payment practical notes, styled like .faq-note */
+  .tariff-note{
+    margin-top:70px;
+    padding-top:50px;
+    border-top:1px solid var(--color-rule);
+  }
+  .tariff-note h3{margin-bottom:16px;}
+  .tariff-note p{font-size:14px;color:var(--color-body);line-height:1.85;max-width:760px;margin-bottom:16px;}
+
+  /* Small centered caption under the SDF pricing cards (regional-traveler
+     rate note) */
+  .tariff-regional-note{
+    text-align:center;
+    max-width:640px;
+    margin:36px auto 0;
+    font-size:13px;
+    color:var(--color-gray-muted);
+  }
+
+  /* FAQ page: repeatable category blocks, each its own eyebrow + heading
+     above a standard .faq-columns pair — everything else (.faq-item,
+     .faq-question, .faq-answer, the accordion JS) is reused as-is. */
+  .faq-category{padding-top:70px;}
+  .faq-category:first-child{padding-top:0;}
+  .faq-category-head{margin-bottom:40px;}
+  .faq-category-head .eyebrow{margin-bottom:10px;}
+
+  /* ================= ENQUIRE PAGE ================= */
+  /* Split intro — a tall environmental photo on the left (with a small
+     "who you'll hear from" planner card anchored over it, reusing
+     .team-avatar's exact gold-initial styling from about.html) and the
+     form on the right, presented as an elevated card that overlaps the
+     photo on desktop (same offset-overlap idea as .about-media-accent
+     overlapping .about-media-main, just mirrored — a photo + a floating
+     card instead of photo + photo). This replaces an earlier plain
+     symmetric two-box layout that read as a generic template contact
+     page. */
+  .enquire-split{background:var(--color-white);padding:150px 0 0;}
+  .enquire-split-grid{
+    display:grid;
+    grid-template-columns:1fr 1.05fr;
+    align-items:stretch;
+  }
+  .enquire-visual{position:relative;min-height:680px;overflow:hidden;}
+  .enquire-visual-img{
+    position:absolute;
+    inset:0;
+    background-size:cover;
+    background-position:center;
+    transition:transform 1.2s var(--ease);
+  }
+  .enquire-split:hover .enquire-visual-img{transform:scale(1.04);}
+  .enquire-visual::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(to top, rgba(14,21,18,0.8), rgba(14,21,18,0) 55%);
+  }
+  .enquire-planner-card{
+    position:absolute;
+    left:32px;right:32px;bottom:32px;
+    z-index:2;
+    display:flex;
+    align-items:center;
+    gap:16px;
+    background:rgba(255,255,255,0.97);
+    padding:18px 22px;
+    box-shadow:0 20px 45px rgba(14,21,18,0.25);
+  }
+  .enquire-planner-card .team-avatar{width:56px;max-width:56px;margin:0;flex:none;}
+  .enquire-planner-card .team-initials{font-size:19px;}
+  .enquire-planner-name{
+    font-family:var(--font-display);
+    font-size:16px;
+    letter-spacing:0.5px;
+    color:var(--color-primary-dark);
+    text-transform:uppercase;
+  }
+  .enquire-planner-role{
+    display:block;
+    font-family:var(--font-body);
+    font-size:10px;
+    font-weight:700;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--color-accent-gold);
+    margin-top:3px;
+  }
+  .enquire-form-card{
+    position:relative;
+    z-index:2;
+    background:var(--color-white);
+    padding:72px 64px;
+    margin-left:-64px;
+    box-shadow:0 30px 70px rgba(14,21,18,0.14);
+  }
+  .enquire-form-lede{font-size:14px;color:var(--color-body);line-height:1.8;margin:20px 0 6px;max-width:440px;}
+
+  @media (max-width:1100px){
+    .enquire-form-card{padding:60px 48px;margin-left:-40px;}
+  }
+  @media (max-width:900px){
+    .enquire-split{padding-top:100px;}
+    .enquire-split-grid{grid-template-columns:1fr;}
+    .enquire-visual{min-height:340px;}
+    .enquire-form-card{margin-left:0;padding:56px 26px;box-shadow:none;border-top:1px solid var(--color-rule);}
+  }
+
+  /* Form fields — plain underline inputs (no boxes, matching the site's
+     rule-line aesthetic elsewhere: .faq-item, .tariff-includes li) but
+     with an animated gold underline that grows in on focus instead of a
+     flat color swap, via a sibling .field-underline span. */
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:0 28px;}
+  .form-field{position:relative;margin-bottom:32px;}
+  .form-field label{
+    display:block;
+    font-family:var(--font-body);
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--color-gray-muted);
+    margin-bottom:10px;
+  }
+  .form-field input,
+  .form-field select,
+  .form-field textarea{
+    width:100%;
+    border:none;
+    border-bottom:1px solid var(--color-rule);
+    background:transparent;
+    padding:10px 2px;
+    font-family:var(--font-body);
+    font-size:14px;
+    color:var(--color-primary-dark);
+  }
+  .form-field input:focus,
+  .form-field select:focus,
+  .form-field textarea:focus{outline:none;}
+  .form-field textarea{resize:vertical;min-height:110px;padding-top:10px;}
+  .form-field select{cursor:pointer;}
+  .field-underline{
+    position:absolute;
+    left:0;bottom:0;
+    height:2px;width:0;
+    background:var(--color-accent-gold);
+    transition:width .35s var(--ease);
+  }
+  .form-field input:focus ~ .field-underline,
+  .form-field select:focus ~ .field-underline,
+  .form-field textarea:focus ~ .field-underline{width:100%;}
+  .enquire-form{margin-top:8px;}
+  .enquire-form .btn{margin-top:6px;border:none;cursor:pointer;}
+  @media (max-width:580px){
+    .form-row{grid-template-columns:1fr;}
+  }
+
+  /* "Reach Us Directly" — a full-width icon-card row below the split
+     intro, instead of a boxed sidebar list, so contact methods read as
+     equal, scannable options rather than a stacked spec sheet. */
+  .contact-band{background:var(--color-white);padding:110px 0 40px;}
+  .contact-band-head{max-width:640px;margin:0 auto 60px;text-align:center;}
+  .contact-icon-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:28px;
+  }
+  .contact-icon-card{
+    text-align:center;
+    padding:38px 22px;
+    border:1px solid var(--color-rule);
+    transition:border-color .3s var(--ease), transform .3s var(--ease);
+  }
+  .contact-icon-card:hover{border-color:var(--color-accent-gold);transform:translateY(-6px);}
+  .contact-icon-circle{
+    width:52px;height:52px;
+    border-radius:50%;
+    background:rgba(176,141,87,0.1);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin:0 auto 18px;
+  }
+  .contact-icon-circle svg{width:21px;height:21px;color:var(--color-accent-gold);}
+  .contact-icon-label{
+    display:block;
+    font-family:var(--font-body);
+    font-size:10.5px;
+    font-weight:700;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--color-gray-muted);
+    margin-bottom:8px;
+  }
+  .contact-icon-value{
+    display:block;
+    font-family:var(--font-body);
+    font-size:14.5px;
+    font-weight:600;
+    color:var(--color-primary-dark);
+    line-height:1.5;
+  }
+  a.contact-icon-value:hover{color:var(--color-accent-gold-deep);}
+  @media (max-width:900px){
+    .contact-icon-grid{grid-template-columns:1fr 1fr;gap:18px;}
+  }
+  @media (max-width:580px){
+    .contact-icon-grid{grid-template-columns:1fr;}
+  }
+
+  /* Map — full-width and cinematic rather than squeezed into a narrow
+     sidebar column, so it reads as a confident closing element. */
+  .enquire-map-section{background:var(--color-white);padding:30px 0 150px;}
+  .enquire-map-head{max-width:640px;margin:0 auto 36px;text-align:center;}
+  .enquire-map{
+    border:2px solid var(--color-primary-dark);
+    box-shadow:0 20px 45px rgba(14,21,18,0.12);
+    aspect-ratio:21/8;
+    overflow:hidden;
+  }
+  .enquire-map iframe{width:100%;height:100%;border:0;display:block;}
+  .enquire-map-caption{text-align:center;margin-top:22px;font-size:13px;color:var(--color-gray-muted);}
+  @media (max-width:900px){
+    .enquire-map{aspect-ratio:4/3;}
+  }
+
+  /* ================= PARTNERS (homepage, above FAQ) ================= */
+  /* An infinite CSS-driven marquee, not a manual prev/next slider —
+     .partners-track holds the 6 logos once, then the same 6 again
+     immediately after (marked aria-hidden/tabindex="-1", since they're
+     decorative repeats), and the whole flex row is exactly double its
+     visible width; animating translateX from 0 to -50% loops seamlessly.
+     Same "duplicate + translate a fixed distance" technique .hero-mist
+     already uses for its drifting clouds, just left-right instead of
+     one direction with parallax. Pauses on hover so a logo can actually
+     be read/clicked. */
+  .partners{background:var(--color-white);padding:100px 0 90px;border-top:1px solid var(--color-rule);}
+  .partners-head{max-width:640px;margin:0 auto 56px;text-align:center;}
+  .partners-track-wrap{
+    width:100%;
+    overflow:hidden;
+    -webkit-mask-image:linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+    mask-image:linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  }
+  .partners-track{
+    display:flex;
+    align-items:center;
+    gap:90px;
+    width:max-content;
+    animation:partnersScroll 36s linear infinite;
+  }
+  .partners-track:hover{animation-play-state:paused;}
+  .partner-logo{
+    flex:none;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    height:64px;
+    width:160px;
+    filter:grayscale(100%);
+    opacity:0.55;
+    transition:filter .35s var(--ease), opacity .35s var(--ease);
+  }
+  .partner-logo:hover{filter:grayscale(0%);opacity:1;}
+  .partner-logo img{max-height:100%;max-width:100%;object-fit:contain;}
+  @keyframes partnersScroll{
+    from{transform:translateX(0);}
+    to{transform:translateX(-50%);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .partners-track{animation:none;}
+    .partners-track-wrap{overflow-x:auto;}
+  }
+  @media (max-width:580px){
+    .partner-logo{height:48px;width:120px;}
+    .partners-track{gap:56px;}
+  }
+
+  /* ================= TOUR DETAIL PAGES ================= */
+  /* Template for individual-tour pages (e.g. tigers-nest-pilgrimage.html) —
+     hero (standard .hero--page.hero--center, same as every other inner
+     page) → .info-lead intro → trip-facts strip (reuses .season-grid/
+     .bhutan-fact-card as-is, no new CSS) → day-by-day itinerary →
+     "Where You'll Go" district-highlight map → an embedded
+     "Enquire About This Tour" form card. No sitewide Dark CTA at the
+     bottom — the tour-specific enquiry card already is this page's CTA,
+     same reasoning as enquire.html dropping its own Dark CTA. */
+
+  /* Day-by-day itinerary */
+  .itinerary{background:var(--color-white);padding:20px 0 110px;}
+  .itinerary-head{max-width:640px;margin:0 auto 56px;text-align:center;}
+  .itinerary-list{max-width:820px;margin:0 auto;}
+  .itinerary-day{
+    display:grid;
+    grid-template-columns:110px 1fr;
+    gap:32px;
+    padding:38px 0;
+    border-top:1px solid var(--color-rule);
+  }
+  .itinerary-day:last-child{border-bottom:1px solid var(--color-rule);}
+  .itinerary-day-num{
+    font-family:var(--font-body);
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--color-accent-gold);
+  }
+  .itinerary-day-num strong{
+    display:block;
+    font-family:var(--font-display);
+    font-size:42px;
+    letter-spacing:1px;
+    color:var(--color-primary-dark);
+    line-height:1;
+    margin-top:6px;
+  }
+  .itinerary-day h3{margin-bottom:12px;}
+  .itinerary-day p{font-size:14px;line-height:1.8;color:var(--color-body);}
+  @media (max-width:700px){
+    .itinerary-day{grid-template-columns:1fr;gap:8px;}
+    .itinerary-day-num strong{font-size:30px;}
+  }
+
+  /* "Where You'll Go" district-highlight map — a static, non-interactive
+     read of the same district SVG the homepage's Explore Bhutan map uses
+     (copied in, since the site has no include/templating system to share
+     it — same "duplicate the markup" approach as the header/footer). It's
+     intentionally a separate, simpler set of classes from the homepage
+     map's `.bhutan-map-container .district` (hover/tooltip/flight-path
+     behavior) — this one only ever needs two fill states, on-tour or not,
+     and must never pick up that map's hover/JS behavior since there's
+     none here. */
+  .tour-map-section{background:var(--color-white);padding:20px 0 110px;}
+  .tour-map-head{max-width:640px;margin:0 auto 40px;text-align:center;}
+  .tour-map-card{
+    max-width:900px;
+    margin:0 auto;
+    border:2px solid var(--color-primary-dark);
+    box-shadow:0 20px 45px rgba(14,21,18,0.12);
+    padding:44px;
+  }
+  .tour-map-card svg{width:100%;height:auto;display:block;}
+  .tour-map-card svg .tour-district{fill:#ECEEE7;stroke:#fff;stroke-width:1.1;}
+  .tour-map-card svg .tour-district.is-on-tour{fill:var(--color-primary-dark);}
+  .tour-map-caption{
+    margin-top:26px;
+    padding-top:22px;
+    border-top:1px solid var(--color-rule);
+    font-size:13px;
+    color:var(--color-gray-muted);
+  }
+  .tour-map-caption strong{color:var(--color-primary-dark);font-weight:600;}
+  @media (max-width:580px){
+    .tour-map-card{padding:26px 20px;}
+  }
+
+  /* Tour-specific "Enquire About This Tour" card — reuses .form-field/
+     .form-row/.field-underline from the ENQUIRE PAGE block above as-is,
+     just inside a bordered card instead of the split-photo layout (a
+     single tour page doesn't need its own planner photo panel). The one
+     new field type here is the read-only "Tour" field, pre-filled with
+     this page's own title so the emailed enquiry always says which tour
+     it's about — every future tour-detail page copying this template
+     should set that field's value to its own title. */
+  .tour-enquire{background:var(--color-white);padding:20px 0 140px;}
+  .tour-enquire-card{
+    max-width:760px;
+    margin:0 auto;
+    border:1px solid var(--color-rule);
+    padding:64px 56px;
+  }
+  .tour-enquire-card .enquire-form{margin-top:28px;}
+  .form-field input[readonly]{
+    background:rgba(176,141,87,0.06);
+    color:var(--color-primary-dark);
+    font-weight:600;
+    cursor:default;
+  }
+  .tour-enquire-quick{
+    margin-top:12px;
+    padding-top:36px;
+    border-top:1px solid var(--color-rule);
+    display:flex;
+    align-items:center;
+    gap:28px;
+    flex-wrap:wrap;
+  }
+  .tour-enquire-email{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-size:13.5px;
+    font-weight:600;
+    color:var(--color-primary-dark);
+  }
+  .tour-enquire-email svg{width:16px;height:16px;color:var(--color-accent-gold);flex:none;}
+  .tour-enquire-email:hover{color:var(--color-accent-gold-deep);}
+  @media (max-width:580px){
+    .tour-enquire-card{padding:44px 24px;}
+  }
+
+  /* -------- Tour detail hero variant --------
+     A deliberate, scoped exception to the ".hero--page shows title only"
+     rule above: tour-detail pages carry a duration badge and a one-line
+     summary under the title, same as the reference layout this template
+     was built from. Don't carry eyebrow/description onto .hero--page
+     itself or onto any other inner-page hero — this is `.hero--tour`
+     only, used nowhere else. */
+  .hero--tour{align-items:flex-end;justify-content:flex-start;}
+  .hero--tour .hero-content{
+    text-align:left;
+    max-width:640px;
+    margin:0;
+    padding:0 60px 90px;
+  }
+  .hero-tour-badge{
+    display:inline-block;
+    margin-bottom:18px;
+    padding:8px 16px;
+    border:1px solid rgba(255,255,255,0.5);
+    color:var(--color-white);
+    font-family:var(--font-body);
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+  }
+  .hero--tour .hero-content h1{margin-bottom:16px;}
+  .hero-tour-sub{
+    font-family:var(--font-body);
+    font-size:14px;
+    line-height:1.8;
+    color:rgba(255,255,255,0.85);
+    max-width:520px;
+  }
+  @media (max-width:580px){
+    .hero--tour .hero-content{padding:0 26px 60px;}
+  }
+
+  /* Shared reading-column width for the prose blocks on a tour page
+     (overview, highlights, cost note, enquiry) — the facts card and map
+     card go slightly wider (900px, set on their own classes above). */
+  .tour-facts-section{background:var(--color-white);padding:40px 0 0;}
+  .tour-facts-card{
+    max-width:900px;
+    margin:0 auto;
+    border:1px solid var(--color-rule);
+    padding:44px;
+  }
+  .tour-facts-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:26px 48px;
+    margin-bottom:32px;
+  }
+  .tour-fact{display:flex;align-items:flex-start;gap:14px;}
+  .tour-fact-icon{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    flex:none;
+    width:44px;height:44px;
+    margin-top:2px;
+    border-radius:50%;
+    background:rgba(176,141,87,0.1);
+  }
+  .tour-fact-icon svg{width:19px;height:19px;color:var(--color-accent-gold);}
+  .tour-fact-text{display:flex;flex-direction:column;gap:4px;}
+  .tour-fact-label{
+    font-family:var(--font-body);
+    font-size:10.5px;
+    font-weight:700;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--color-gray-muted);
+  }
+  .tour-fact-value{
+    font-family:var(--font-body);
+    font-size:14.5px;
+    font-weight:600;
+    line-height:1.45;
+    color:var(--color-primary-dark);
+  }
+  @media (max-width:700px){
+    .tour-facts-grid{grid-template-columns:1fr;}
+  }
+  @media (max-width:580px){
+    .tour-facts-card{padding:30px 24px;}
+  }
+
+  .tour-note{
+    max-width:900px;
+    margin:26px auto 0;
+    padding:18px 22px;
+    border-left:2px solid var(--color-accent-gold);
+    background:rgba(176,141,87,0.06);
+    font-size:13.5px;
+    line-height:1.75;
+    color:var(--color-body);
+  }
+
+  /* Overview / Highlights prose blocks — same 820px reading column the
+     itinerary list already uses below. */
+  .tour-content{background:var(--color-white);padding:80px 0 0;}
+  .tour-content-inner{max-width:820px;margin:0 auto;}
+  .tour-content-inner + .tour-content-inner{margin-top:70px;}
+  .tour-content-inner h2{margin-bottom:18px;}
+  .tour-content-inner > p{font-size:15px;line-height:1.85;color:var(--color-body);}
+  .tour-highlights{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px 36px;
+  }
+  .tour-highlights li{
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+    font-size:14px;
+    line-height:1.6;
+    color:var(--color-body);
+  }
+  .tour-highlights li svg{flex:none;width:16px;height:16px;color:var(--color-accent-gold);margin-top:2px;}
+  @media (max-width:700px){
+    .tour-highlights{grid-template-columns:1fr;}
+  }
+
+  /* Day-by-day itinerary as an accordion — reuses .faq-item/.faq-question/
+     .faq-answer/.faq-icon verbatim (the FAQ accordion JS already closes
+     every other open .faq-item on the page when one opens; on a page
+     that's only itinerary days, that single-open behavior is exactly
+     what's wanted). .itinerary-list just gives the FAQ items a top rule
+     matching the reading column, since they don't sit inside .faq-columns
+     here. */
+  .itinerary-list .faq-item:first-child{border-top:1px solid var(--color-rule);}
+
+  .tour-cost{background:var(--color-white);padding:20px 0 0;}
+  .tour-cost-card{
+    max-width:820px;
+    margin:0 auto;
+    padding:36px 40px;
+    background:rgba(176,141,87,0.06);
+  }
+  .tour-cost-card h3{margin-bottom:14px;}
+  .tour-cost-card p{font-size:14px;line-height:1.8;color:var(--color-body);}
+
+  /* -------- Multi-photo gallery hero (alternative to a single full-bleed
+     .hero--tour) --------
+     A horizontal scroll-snap strip of photos sitting right below the
+     header (not behind it, unlike every other hero on the site — see the
+     body.tour-gallery-page rule below), with the title/badge/description
+     underneath on white instead of overlaid on the image. Reuses
+     initCardSlider (script.js) for the prev/next arrows exactly like the
+     Journeys and Activities sliders — this is that function's third
+     call, per the standing "add future horizontal sliders as a new call
+     to initCardSlider" rule. Pick this OR .hero--tour for a given tour
+     page, not both. */
+  /* :not(.scrolled) so this only overrides the header's default transparent
+     state — once header.scrolled kicks in from actual scrolling, its own
+     white background + dark nav-link color rules take over exactly like
+     every other page (dropping :not() here would tie its specificity with
+     header.scrolled and let source order decide, which risks the header
+     staying dark-on-dark once .scrolled also darkens the nav text). */
+  body.tour-gallery-page header:not(.scrolled){background:var(--color-primary-dark);}
+
+  .tour-gallery-hero{position:relative;background:var(--color-black-green);}
+  .tour-gallery-wrap{position:relative;width:100%;}
+  .tour-gallery-track{
+    display:flex;
+    gap:2px;
+    height:65vh;
+    min-height:420px;
+    max-height:720px;
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    scroll-behavior:smooth;
+    -ms-overflow-style:none;
+    scrollbar-width:none;
+  }
+  .tour-gallery-track::-webkit-scrollbar{display:none;}
+  .tour-gallery-slide{
+    position:relative;
+    flex:0 0 31%;
+    height:100%;
+    overflow:hidden;
+    background:var(--color-black-green);
+    scroll-snap-align:start;
+  }
+  .tour-gallery-slide img{width:100%;height:100%;object-fit:cover;display:block;}
+  .tour-gallery-embed{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#000;}
+  .tour-gallery-slide--video.is-playing .tour-gallery-poster,
+  .tour-gallery-slide--video.is-playing .tour-gallery-play{display:none;}
+  .tour-gallery-play{
+    position:absolute;
+    top:50%;left:50%;
+    transform:translate(-50%,-50%);
+    z-index:2;
+    width:56px;height:56px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:50%;
+    background:rgba(255,255,255,0.92);
+    color:var(--color-primary-dark);
+    border:none;
+    cursor:pointer;
+    transition:transform .3s var(--ease), background-color .3s var(--ease);
+  }
+  .tour-gallery-play svg{margin-left:2px;}
+  .tour-gallery-play:hover{background:var(--color-white);transform:translate(-50%,-50%) scale(1.08);}
+  #tourGalleryPrev{left:16px;}
+  #tourGalleryNext{right:16px;}
+  #tourGalleryPrev, #tourGalleryNext{border-radius:0;}
+  @media (max-width:900px){
+    .tour-gallery-slide{flex-basis:80%;}
+    .tour-gallery-track{height:52vh;min-height:320px;}
+  }
+
+  .tour-hero-info{background:var(--color-white);padding:40px 0 0;}
+  .tour-hero-info .hero-tour-badge{
+    border-color:var(--color-rule);
+    color:var(--color-gray-muted);
+  }
+  .tour-hero-info h1{margin-bottom:16px;}
+  .tour-hero-info p{
+    font-size:15px;
+    line-height:1.8;
+    color:var(--color-body);
+    max-width:640px;
+  }

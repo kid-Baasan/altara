@@ -89,6 +89,7 @@
   }
   initCardSlider('journeyTrack', 'journeyPrev', 'journeyNext', 'journey-card');
   initCardSlider('activityTrack', 'activityPrev', 'activityNext', 'activity-card', true);
+  initCardSlider('tourGalleryTrack', 'tourGalleryPrev', 'tourGalleryNext', 'tour-gallery-slide');
 
   // Activities slider — auto-advances on its own, marking whichever card is
   // currently snapped into view as "active" (which is what reveals its
@@ -704,18 +705,43 @@
       a.addEventListener('click', close);
     });
 
-    // "Experiences" sub-menu expands inline within the panel.
-    var subToggle = panel.querySelector('.mobile-nav-toggle');
-    var sub = panel.querySelector('.mobile-nav-sub');
-    if(subToggle && sub){
+    // Each category sub-menu ("Experiences", "Information", ...) expands
+    // inline within the panel — every .mobile-nav-toggle button toggles
+    // its own very next .mobile-nav-sub sibling, so this works whether a
+    // page has one toggle or several.
+    panel.querySelectorAll('.mobile-nav-toggle').forEach(function(subToggle){
+      var sub = subToggle.nextElementSibling;
+      if(!sub || !sub.classList.contains('mobile-nav-sub')) return;
       subToggle.addEventListener('click', function(){
         var isOpen = sub.classList.toggle('is-open');
         subToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
       });
       sub.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', close); });
-    }
+    });
 
     window.addEventListener('resize', function(){
       if(window.innerWidth > 900) close();
+    });
+  })();
+
+  // Tour gallery hero — video-in-place. The prev/next arrows are handled
+  // by initCardSlider above; this just swaps the video slide's poster
+  // image + play button for a local <video> (no external embed) on click.
+  (function(){
+    var videoSlide = document.querySelector('.tour-gallery-slide--video');
+    var playBtn = videoSlide && videoSlide.querySelector('.tour-gallery-play');
+    var videoSrc = videoSlide && videoSlide.dataset.videoSrc;
+    if(!videoSlide || !playBtn || !videoSrc) return;
+
+    playBtn.addEventListener('click', function(){
+      if(videoSlide.querySelector('.tour-gallery-embed')) return;
+      var video = document.createElement('video');
+      video.className = 'tour-gallery-embed';
+      video.src = videoSrc;
+      video.controls = true;
+      video.autoplay = true;
+      video.playsInline = true;
+      videoSlide.appendChild(video);
+      videoSlide.classList.add('is-playing');
     });
   })();
