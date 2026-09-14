@@ -18,24 +18,70 @@
     document.addEventListener('click', tryPlay, { once: true });
   })();
 
-  // Header scroll state
+  // Header scroll state — two independent concerns toggled off the same
+  // scroll position: .scrolled (background/logo swap, unchanged) and
+  // .header-hidden (slide the whole header off-screen on scroll-down,
+  // slide it back in on scroll-up, styled in style.css). Direction is
+  // read straight off the raw scroll delta each tick rather than a
+  // separate listener, so the two states never disagree about where the
+  // page actually is.
   (function(){
     var header = document.getElementById('siteHeader');
     var logo = document.getElementById('siteLogo');
+    var mobileNav = document.getElementById('mobileNav');
     var isScrolled = false;
+    var isHidden = false;
+    var lastY = window.scrollY;
     var ticking = false;
+    // Below this, always keep the header visible — avoids hiding it
+    // right at the top of the page (where a hairline scroll jitter could
+    // otherwise flicker it) and gives a small dead zone before scroll-down
+    // hiding kicks in at all.
+    var REVEAL_ZONE = 120;
+    // Ignore sub-pixel/momentum jitter so a barely-there scroll doesn't
+    // toggle the header back and forth.
+    var DELTA_THRESHOLD = 6;
+
     function update(){
-      var scrolled = window.scrollY > 60;
+      var y = window.scrollY;
+      var scrolled = y > 60;
       if(scrolled !== isScrolled){
         isScrolled = scrolled;
         header.classList.toggle('scrolled', scrolled);
         logo.src = scrolled ? 'assets/images/logo/logo.png' : 'assets/images/logo/logo white.png';
       }
+
+      // Never hide the header while the mobile nav panel is open (its own
+      // close button lives inside the header) or while it's already
+      // sitting in the top dead zone.
+      var mobileNavOpen = mobileNav && mobileNav.classList.contains('is-open');
+      var delta = y - lastY;
+      var shouldHide = isHidden;
+      if(mobileNavOpen || y <= REVEAL_ZONE){
+        shouldHide = false;
+      } else if(delta > DELTA_THRESHOLD){
+        shouldHide = true;
+      } else if(delta < -DELTA_THRESHOLD){
+        shouldHide = false;
+      }
+      if(shouldHide !== isHidden){
+        isHidden = shouldHide;
+        header.classList.toggle('header-hidden', isHidden);
+      }
+
+      lastY = y;
       ticking = false;
     }
     window.addEventListener('scroll', function(){
       if(!ticking){ window.requestAnimationFrame(update); ticking = true; }
     });
+    // Run once on load too, not just on the next scroll event — otherwise
+    // a page that loads already scrolled (mobile back/forward navigation,
+    // bfcache restores, or landing on an in-page anchor like #enquire)
+    // keeps the transparent/white-text "top of page" header state until
+    // the user scrolls again, even while sitting over a light-background
+    // section further down the page.
+    update();
   })();
 
   // Generic horizontal card slider — scroll-snap track + prev/next arrows.
@@ -90,6 +136,7 @@
   initCardSlider('journeyTrack', 'journeyPrev', 'journeyNext', 'journey-card');
   initCardSlider('activityTrack', 'activityPrev', 'activityNext', 'activity-card', true);
   initCardSlider('tourGalleryTrack', 'tourGalleryPrev', 'tourGalleryNext', 'tour-gallery-slide');
+  initCardSlider('blogTrack', 'blogPrev', 'blogNext', 'blog-card');
 
   // Activities slider — auto-advances on its own, marking whichever card is
   // currently snapped into view as "active" (which is what reveals its
@@ -743,5 +790,64 @@
       video.playsInline = true;
       videoSlide.appendChild(video);
       videoSlide.classList.add('is-playing');
+    });
+  })();
+
+  // Tour gallery lightbox — clicking any non-video slide's photo opens it
+  // at full size (the strip itself stays object-fit:cover by design, so
+  // this is how a visitor sees the whole, uncropped image).
+  (function(){
+    var lightbox = document.getElementById('tourGalleryLightbox');
+    var lightboxImg = document.getElementById('tourGalleryLightboxImg');
+    var closeBtn = document.getElementById('tourGalleryLightboxClose');
+    var prevBtn = document.getElementById('tourGalleryLightboxPrev');
+    var nextBtn = document.getElementById('tourGalleryLightboxNext');
+    var images = Array.prototype.slice.call(
+      document.querySelectorAll('.tour-gallery-slide:not(.tour-gallery-slide--video) img')
+    );
+    if(!lightbox || !lightboxImg || !images.length) return;
+
+    var currentIndex = 0;
+
+    function render(){
+      var img = images[currentIndex];
+      lightboxImg.src = img.currentSrc || img.src;
+      lightboxImg.alt = img.alt;
+    }
+    function open(index){
+      currentIndex = index;
+      render();
+      lightbox.classList.add('is-open');
+      lightbox.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+    function close(){
+      lightbox.classList.remove('is-open');
+      lightbox.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+    function showPrev(){
+      currentIndex = (currentIndex - 1 + images.length) % images.length;
+      render();
+    }
+    function showNext(){
+      currentIndex = (currentIndex + 1) % images.length;
+      render();
+    }
+
+    images.forEach(function(img, index){
+      img.addEventListener('click', function(){ open(index); });
+    });
+    if(closeBtn) closeBtn.addEventListener('click', close);
+    if(prevBtn) prevBtn.addEventListener('click', showPrev);
+    if(nextBtn) nextBtn.addEventListener('click', showNext);
+    lightbox.addEventListener('click', function(e){
+      if(e.target === lightbox) close();
+    });
+    window.addEventListener('keydown', function(e){
+      if(!lightbox.classList.contains('is-open')) return;
+      if(e.key === 'Escape') close();
+      if(e.key === 'ArrowLeft') showPrev();
+      if(e.key === 'ArrowRight') showNext();
     });
   })();
