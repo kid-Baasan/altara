@@ -34,8 +34,8 @@
             <div class="nav-dropdown-panel">
               <a href="cultural-tours.html">Cultural Tours</a>
               <a href="trekking-tours.html">Trekking Tours</a>
-              <a href="index.html#journeys">Festival Tours</a>
-              <a href="index.html#journeys">Luxury Tours</a>
+              <a href="festival-tours.html">Festival Tours</a>
+              <a href="luxury-tours.html">Luxury Tours</a>
             </div>
           </div>
         </div>
@@ -87,8 +87,8 @@
       <div class="mobile-nav-sub">
         <a href="cultural-tours.html">Cultural Tours</a>
         <a href="trekking-tours.html">Trekking Tours</a>
-        <a href="index.html#journeys">Festival Tours</a>
-        <a href="index.html#journeys">Luxury Tours</a>
+        <a href="festival-tours.html">Festival Tours</a>
+        <a href="luxury-tours.html">Luxury Tours</a>
       </div>
       <button type="button" class="mobile-nav-toggle" aria-expanded="false">Information</button>
       <div class="mobile-nav-sub">
@@ -110,7 +110,7 @@
         <div class="tour-gallery-slide tour-gallery-slide--video"
           data-video-src="assets/video/Bhutan Believe_ Land of the Thunder Dragon I New Brand Film.mp4">
           <img src="assets/images/image/taktshang.jpg" alt="The Tiger's Nest Pilgrimage, Bhutan"
-            class="tour-gallery-poster">
+            class="tour-gallery-poster" style="object-position:center 68%;">
           <button class="tour-gallery-play" type="button" aria-label="Play video">
             <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
               <path d="M8 5v14l11-7z" />
@@ -122,13 +122,15 @@
             alt="Terraced valley near Paro, Bhutan">
         </div>
         <div class="tour-gallery-slide">
-          <img src="assets/images/image/Thimphu Tshechu by Bassem Nimah101.jpg" alt="Masked dancer, Thimphu Tshechu">
+          <img src="assets/images/image/Thimphu Tshechu by Bassem Nimah101.jpg" alt="Masked dancer, Thimphu Tshechu"
+            style="object-position:38% center;">
         </div>
         <div class="tour-gallery-slide">
           <img src="assets/images/image/memorial chorten.jpg" alt="National Memorial Chorten, Thimphu">
         </div>
         <div class="tour-gallery-slide">
-          <img src="assets/images/image/Haa by Marcus Westberg23.jpg" alt="Traditional tiger mural, Bhutan">
+          <img src="assets/images/image/Haa by Marcus Westberg23.jpg" alt="Traditional tiger mural, Bhutan"
+            style="object-position:32% center;">
         </div>
       </div>
       <button class="slider-arrow prev" id="tourGalleryPrev" aria-label="Previous photo">
@@ -145,6 +147,31 @@
       </button>
     </div>
   </section>
+
+  <!-- Gallery lightbox — populated/opened by script.js when a slide's photo is clicked -->
+  <div class="tour-gallery-lightbox" id="tourGalleryLightbox" aria-hidden="true">
+    <button class="tour-gallery-lightbox-close" id="tourGalleryLightboxClose" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+        stroke-linejoin="round">
+        <path d="M6 6l12 12M18 6L6 18" />
+      </svg>
+    </button>
+    <button class="tour-gallery-lightbox-arrow tour-gallery-lightbox-arrow--prev" id="tourGalleryLightboxPrev"
+      aria-label="Previous photo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+        stroke-linejoin="round">
+        <path d="M15 18l-6-6 6-6" />
+      </svg>
+    </button>
+    <img src="" alt="" id="tourGalleryLightboxImg">
+    <button class="tour-gallery-lightbox-arrow tour-gallery-lightbox-arrow--next" id="tourGalleryLightboxNext"
+      aria-label="Next photo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+        stroke-linejoin="round">
+        <path d="M9 18l6-6-6-6" />
+      </svg>
+    </button>
+  </div>
 
   <!-- ================= HERO INFO ================= -->
   <section class="tour-hero-info reveal">
@@ -534,6 +561,8 @@
             <li><a href="index.html#journeys">Honeymooners</a></li>
             <li><a href="trekking-tours.html">Trekkers</a></li>
             <li><a href="cultural-tours.html">Cultural Travelers</a></li>
+            <li><a href="festival-tours.html">Festival Travelers</a></li>
+            <li><a href="luxury-tours.html">Luxury Travelers</a></li>
           </ul>
         </div>
         <div class="footer-col">

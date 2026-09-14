@@ -20,6 +20,24 @@ Altara/
 │                                     highlight map, per-tour enquiry form)
 ├── trekking-tours.html            # Trekking Tours page — 6-card itinerary grid,
 │                                     same template as cultural-tours.html
+├── druk-path-trek.html            # Tour detail page for Trekking Tours' first
+│                                     card — a richer variant of
+│                                     tigers-nest-pilgrimage.html's template
+│                                     (8 trip facts, What To Pack, 3-column
+│                                     Included/Excluded breakdown, dedicated
+│                                     FAQ accordion, footer photo gallery)
+├── festival-tours.html            # Festival Tours page — NOT a tour-grid like
+│                                     Cultural/Trekking; same hero, editorial
+│                                     content about Bhutan's Tshechus, a 6-card
+│                                     festival grid, and a downloadable festival
+│                                     dates PDF instead of bookable itineraries
+├── luxury-tours.html              # Luxury Tours page — same hero as the other
+│                                     category pages, and .luxury-card matches
+│                                     .tour-card's own sizing (3-up, 3/5 ratio),
+│                                     but reads as a "book" cover instead of a
+│                                     plain photo (spine, ribbon bookmark, plain
+│                                     soft shadow — no border); the fourth and
+│                                     last Experiences category page
 ├── about-bhutan.html              # Information page — country primer, quick
 │                                     facts, best time to visit
 ├── tariff.html                    # Information page — Sustainable Development
@@ -47,6 +65,12 @@ Altara/
         │                            byte-exact-copy rule as assets/images/image/.
         ├── video/                 # hero background video
         ├── cloud.png              # .hero-mist overlay tile (see the .hero-mist note)
+        ├── documents/             # downloadable PDFs — currently just
+        │                            tentative_festival_dates_2026.pdf, linked
+        │                            from festival-tours.html's festival-calendar
+        │                            download button. Keep any future
+        │                            downloadable document here too rather than
+        │                            starting a second documents folder.
         └── image/                 # ~255 Bhutan travel photos — every actual photo
                                       reference in the site lives under this
                                       subfolder now (assets/images/image/<file>.jpg),
@@ -76,10 +100,11 @@ early `if(!el) return;` inside its own IIFE so it's harmless to include
 1. **Header** — fixed, transparent over hero; on scroll >60px, background
    flips to white and the logo swaps from `logo white.png` → `logo.png`
    (handled in JS, not CSS, since it's a src swap). "Experiences" has a
-   hover/focus dropdown of exactly 4 items — Cultural Tours and Trekking
-   Tours link to their own real pages (`cultural-tours.html`,
-   `trekking-tours.html`), Festival Tours and Luxury Tours are still
-   placeholder `#journeys`/`index.html#journeys` links — deliberately no
+   hover/focus dropdown of exactly 4 items, and as of `luxury-tours.html`
+   all four — Cultural Tours, Trekking Tours, Festival Tours and Luxury
+   Tours — link to their own real pages (`cultural-tours.html`,
+   `trekking-tours.html`, `festival-tours.html`, `luxury-tours.html`); none
+   of the four is a placeholder anymore — deliberately no
    "Activities" item, since Activities is its own full section further down
    the page, not a tour-package category. "Information" is the same
    `.nav-item`/`.nav-dropdown` pattern too: the trigger itself still links to
@@ -117,7 +142,12 @@ early `if(!el) return;` inside its own IIFE so it's harmless to include
    "Signature Journeys" version keyed to specific trips (Bumthang Valley,
    Dochula Pass, ...) — don't recreate that content from memory.
 4. **About (teaser)** — two-column stacked-photo + copy block (`id="story"`),
-   "Read More" links to `about.html`.
+   "Read More" links to `about.html`. `.about-media-accent` (the small
+   offset photo overlapping the main one) is `aspect-ratio:4/5` — a
+   portrait crop matching `.about-media-main`'s own ratio, not the square
+   `1/1` it started as; it's a shared component with `about.html`'s Our
+   Story/Our Philosophy sections (see below), so this taller crop applies
+   there too, not just on the homepage.
 5. **Activities slider** (`id="activities"`) — horizontal scroll-snap card
    slider (Meditation Retreats / Spiritual Retreats / Archery / White-Water
    Rafting / Fly Fishing / Mountain Biking / Bird Watching), built on the
@@ -133,8 +163,7 @@ early `if(!el) return;` inside its own IIFE so it's harmless to include
    currently has centered (`.is-active`, toggled by that same IIFE).
    Replaced the old five-tile "Find Your Journey" category grid — don't
    recreate `.category-tile`/`.category-row` from memory.
-6. **Testimonials** — static 4-column quote grid
-7. **Explore Bhutan map** — interactive SVG map of Bhutan's 20 dzongkhags.
+6. **Explore Bhutan map** — interactive SVG map of Bhutan's 20 dzongkhags.
    Scroll-pinned on desktop (`.bhutan-scroll-pin`, `position:sticky`) so the
    map holds in view while an animated sequence plays: an international
    flight arrives at Paro from outside the map outline, then three domestic
@@ -143,10 +172,56 @@ early `if(!el) return;` inside its own IIFE so it's harmless to include
    Samdrup Jongkhar). On mobile (<901px) the same sequence just plays once,
    timed, as the section scrolls into view (no pin — too fragile on touch).
    Hover a district for a redesigned info-bar tooltip. Sidebar stat cards
-   (`.bhutan-map-facts`) sit beside the map.
-8. **Why Altara** — image/copy split with bullet list
-9. **Blog** — teaser cards
-10. **Partners & Affiliates** (`.partners`) — an infinite CSS marquee of 6
+   (`.bhutan-map-facts`) sit beside the map. Under 640px, `.explore-bhutan`
+   gets extra top padding (`140px 0 80px`, not the generic `80px 0` other
+   mobile sections use) specifically because this section's background
+   (`--color-offwhite`) is the same color `header.scrolled` uses — with
+   only 80px of clearance the fixed header (up to ~100px unscrolled/~70px
+   scrolled, plus its blur/box-shadow) could sit flush over "Routes Into
+   The Kingdom," and since the colors match it read as the heading fading
+   out rather than being obviously covered, not as a section that's
+   actually further down the page. Don't shrink this back to match Blog's/
+   FAQ's `80px 0` without re-checking clearance. Related: the header's own
+   scroll-state IIFE (`script.js`) now also runs its `update()` once on
+   load, not only on the next `scroll` event — previously a page that
+   loaded already scrolled (mobile back/forward nav, bfcache, landing on
+   an in-page anchor) could keep the transparent/white-text "top of page"
+   header state indefinitely until the next scroll tick, which made the
+   same mismatch worse on any light-background section, this one included.
+7. **Why Altara** — image/copy split with bullet list
+8. **Blog** (`.blog`, `id="blog"`) — a horizontal photo-card slider, same
+   scroll-snap + arrow-button mechanics as Explore Trips/Activities
+   (`initCardSlider('blogTrack','blogPrev','blogNext','blog-card')` — a
+   **fourth** call to that function, not a new bespoke slider). `.blog-card`
+   is full-bleed-photo-with-overlay like `.tour-card`/`.journey-card`
+   elsewhere (a `.bg` div for the hover zoom, a bottom-anchored gradient,
+   text pinned to `bottom:0`) rather than the plain white
+   image-on-top-then-text card an earlier version used — don't recreate
+   that older `.blog-card-image`/`.blog-card-tag` version from memory.
+   Six cards now (not three) so the slider has real overflow to scroll
+   through, not just three cards that already fit one view. Each card: a
+   gold `.blog-card-meta` line (date + "By <author>" — bylined to
+   already-established About-page team members, Sonam Tenzin/Tshering
+   Wangmo/Karma Dorji on rotation, rather than inventing new names), a
+   white title, and a description + "Read More" link that both stay
+   hidden until the card is hovered (`.blog-card-body p`/`.blog-card-link`,
+   `max-height`+`opacity` transition — the exact same resting-clean /
+   reveal-on-hover technique `.activity-info p`/`.activity-cta` already
+   use on the Activities slider, just with a top-rule instead of an
+   underline for the link). Only the meta line and title show at rest.
+   `.blog-head` also grew a
+   `.blog-subtitle` line under the h2, and its right side is now
+   `.blog-arrows` (two `.slider-arrow`s, `position:static` overriding
+   their usual absolute-over-the-track positioning since these sit inline
+   in the flex header row instead) rather than the earlier "View All
+   Stories" `.btn-outline-green` link, which was dropped, not hidden —
+   don't reintroduce it without being asked. `.blog-card::after`'s bottom
+   gradient also darkens across the **whole** card on hover
+   (`.blog-card:hover::after`, same gradient shape just raised to
+   `rgba(14,21,18,0.55)→0.92)` instead of `0→0.9`) rather than staying
+   only a bottom band, so the description/CTA revealed on hover stay
+   readable no matter where they land on the photo.
+9. **Partners & Affiliates** (`.partners`) — an infinite CSS marquee of 6
     partner/affiliate logos (Bhutan Airlines, Drukair, Tourism Council of
     Bhutan, ABTO, Guide Association of Bhutan, Hotel Jakar View), each
     linking out to that org's real official site
@@ -165,8 +240,8 @@ early `if(!el) return;` inside its own IIFE so it's harmless to include
     stops the animation and falls back to a manually-scrollable row rather
     than removing the logos. This is a **slider**, not a manual prev/next
     one like `initCardSlider` — don't wire arrow buttons onto it.
-11. **FAQ** — accordion
-12. **Dark CTA** (`id="enquire"`) — `.dark-cta.dark-cta--photo`, same pattern
+10. **FAQ** — accordion
+11. **Dark CTA** (`id="enquire"`) — `.dark-cta.dark-cta--photo`, same pattern
     and markup as Cultural Tours' Dark CTA (see below), just its own
     `buddha point.jpg` background and copy: a plain `<h2>` ("Begin Your
     Story", no eyebrow, no `.accent` span), a description, and the same
@@ -180,7 +255,7 @@ early `if(!el) return;` inside its own IIFE so it's harmless to include
     for the heading; that stays reverted too, don't bring it back. About's
     Dark CTA is untouched — still the plain dark-green/gold-glow `.dark-cta`
     with `.btn-outline-white`/`.btn-solid-gold`.
-13. **Footer** — 4-column dark footer
+12. **Footer** — 4-column dark footer
 
 (The old **Editorial** and **Press strip** sections have been removed
 entirely — don't recreate them from memory.)
@@ -241,10 +316,12 @@ not gold) instead of the usual `.btn` pair. The header's "Experiences" dropdown
 "Cultural Tours" item and the footer's "Cultural Travelers" link both point
 here from every page — keep those in sync if this page is ever renamed or
 removed. This was the template copied for `trekking-tours.html` (see below);
-Festival Tours and Luxury Tours still point at `index.html#journeys`/`#journeys`
-as a placeholder until those pages exist too. ("Activities" is deliberately
-not in this dropdown — it's its own homepage section, not a tour-package
-category.)
+Festival Tours and Luxury Tours both got real pages of their own too
+(`festival-tours.html`, `luxury-tours.html`, see below), though neither
+reuses this page's `.tour-grid` pattern — Festival Tours went editorial,
+Luxury Tours built its own book-styled card grid. ("Activities" is
+deliberately not in this dropdown — it's its own homepage section, not a
+tour-package category.)
 
 One card is the exception to "every card still points at `#enquire`": the
 first card, **The Tiger's Nest Pilgrimage**, links to its own dedicated
@@ -261,7 +338,28 @@ this brand used (`Himaquest Travels`' own `tigers-nest-pilgrimage.html`),
 **restructured to match, reskinned entirely in Altara's own design
 system** — its dark/amber palette, pill buttons and Oswald/Cabin type
 never made it in; only the content architecture did. Same header/footer as
-every page. Content, top to bottom (new CSS at the end of `style.css`
+every page.
+
+Every content block below (`.tour-facts-card`, `.tour-note`,
+`.tour-content-inner`, `.itinerary-list`, `.tour-map-card`,
+`.tour-cost-card`, `.tour-enquire-card`, plus the `.itinerary-head`/
+`.tour-map-head` intro labels) is deliberately **left-anchored, not
+centered** — `margin:0` (not `margin:0 auto`) within `.container`, and
+`text-align:left` on the two head blocks that used to be centered —  so
+the reserved width beyond each block's own `max-width` shows up as empty
+space on the right only, not split evenly on both sides. Every section
+wrapper (`.tour-hero-info`, `.tour-facts-section`, `.tour-content`,
+`.itinerary`, `.tour-map-section`, `.tour-cost`, `.tour-enquire`) also
+shares the exact same `padding:70px 0`. Every content block additionally
+shares one `max-width:1100px` (`.tour-facts-card`, `.tour-note`,
+`.tour-content-inner`, `.itinerary-list`, `.tour-map-card`,
+`.tour-cost-card`, `.tour-enquire-card`) — keep all three of these
+consistent across the template: a new content block gets `margin:0`
+(never `auto`) and `max-width:1100px`, a new section reuses the same
+`padding:70px 0` — don't tune any one of these to look tight against its
+specific neighbor, or they drift out of sync the way they did before.
+
+Content, top to bottom (new CSS at the end of `style.css`
 under "TOUR DETAIL PAGES"):
 
 1. **Hero — `.tour-gallery-hero` + `.tour-hero-info`** (also modeled on a
@@ -285,7 +383,26 @@ under "TOUR DETAIL PAGES"):
    `.slider-arrow` class) are wired via `initCardSlider` in
    `script.js` — this is that function's **third** call, per the standing
    "add future horizontal sliders as a new call to it" rule, not a new
-   bespoke slider. `.tour-hero-info` is a plain white section right
+   bespoke slider. `.tour-gallery-slide img{object-fit:cover}` is
+   deliberate, matching the reference exactly (a `contain` version was
+   tried — it letterboxes on the dark slide background instead of filling
+   the frame edge-to-edge, which isn't what was wanted here); each slide's
+   landscape source photo instead gets its own inline `object-position` on
+   the `<img>` tag so the actual subject (the dancer, the tiger mural,
+   Taktsang itself) stays in frame in this tall narrow crop rather than
+   an arbitrary 50/50 center — set one on any new slide whose subject
+   isn't already dead-center. Clicking any non-video slide's photo opens
+   it uncropped in a full-screen `.tour-gallery-lightbox`
+   (`object-fit:contain`, so this is where a visitor actually sees the
+   whole image rather than the strip's necessarily-cropped view), with its
+   own `.tour-gallery-lightbox-arrow` prev/next (`#tourGalleryLightboxPrev`/
+   `#tourGalleryLightboxNext`) cycling through the same photo set —
+   `#tourGalleryLightbox`/`#tourGalleryLightboxImg`/`#tourGalleryLightboxClose`
+   in the HTML, a small dedicated IIFE in `script.js` (its own click/keydown
+   listeners — including ArrowLeft/ArrowRight — not routed through
+   `initCardSlider`, since this is a separate index/render loop over the
+   same image set rather than a scroll-snap track), closes on the × button,
+   clicking the dark backdrop, or Escape. `.tour-hero-info` is a plain white section right
    after the gallery holding the `.hero-tour-badge` ("5 Days / 4
    Nights") + `<h1>` + one-line summary — content that's normally
    forbidden on `.hero--page` (title-only) lives here instead because
@@ -307,10 +424,13 @@ under "TOUR DETAIL PAGES"):
    `.tour-note` below the card is a small gold-left-border caveat that
    the itinerary is customized further once someone actually enquires.
 3. **`.tour-content`** — two `.tour-content-inner` prose blocks in the
-   same 820px reading column the itinerary/enquiry card use: "Tour
-   Overview" (one paragraph) and "Tour Highlights" (a 2-col `.tour-highlights`
-   checklist, gold checkmarks — same checkmark glyph Tariff's
-   `.tariff-includes` uses).
+   same 1100px column every other content block on this page uses now
+   (`.tour-facts-card`, `.tour-note`, `.itinerary-list`, `.tour-map-card`,
+   `.tour-cost-card`, `.tour-enquire-card` — all explicitly unified to one
+   `max-width:1100px` after a round of individually-tuned widths, 760–1000px,
+   drifted out of sync with each other): "Tour Overview" (one paragraph)
+   and "Tour Highlights" (a 2-col `.tour-highlights` checklist, gold checkmarks — same checkmark
+   glyph Tariff's `.tariff-includes` uses).
 4. **`.itinerary`** — day-by-day, now built as an **accordion** reusing
    `.faq-item`/`.faq-question`/`.faq-answer`/`.faq-icon` verbatim (an
    earlier version used a static always-open `.itinerary-day` list;
@@ -361,12 +481,13 @@ under "TOUR DETAIL PAGES"):
    form, a `.tour-enquire-quick` row repeats the WhatsApp/email quick
    actions.
 
-No "Related Tours" sidebar yet (the reference page has one) — there's only
-one tour-detail page on the site so far, so there's nothing real to link
-to; add one once a second tour-detail page exists rather than linking
-sideways to pages that don't exist. No sitewide Dark CTA section on this
-page either — the tour-specific enquiry card already is the page's CTA,
-same reasoning as `enquire.html` dropping its own Dark CTA.
+No "Related Tours" sidebar yet (the reference page has one) — even now
+that `druk-path-trek.html` exists too (see below), there's still nothing
+built to point a "Related Tours" list at beyond just that one other page,
+so it stays deferred rather than linking to a thin one-item list. No
+sitewide Dark CTA section on this page either — the tour-specific enquiry
+card already is the page's CTA, same reasoning as `enquire.html` dropping
+its own Dark CTA.
 cultural-tours.html's Tiger's Nest card links here instead of `#enquire`
 (see above) — keep that in sync if this page is ever renamed or removed.
 
@@ -391,9 +512,262 @@ Cultural Tours' "Khoma..." images); duration/altitude in `.tour-meta` are
 approximate real-world figures for each named route, not placeholders. The
 header's "Experiences" dropdown "Trekking Tours" item and the footer's
 "Trekkers" link both point here from every page now — keep those in sync
-if this page is ever renamed or removed. If Festival Tours or
-Luxury Tours get their own page next, copy this page (or `cultural-tours.html`)
-the same way rather than starting from scratch.
+if this page is ever renamed or removed. Festival Tours and Luxury Tours
+have since gotten their own real pages too (`festival-tours.html`,
+`luxury-tours.html`, see below), though both were built to a different,
+non-`.tour-grid` brief in each case. All four Experiences categories now
+have a real page — there's no fifth to add without a new request.
+
+Like Cultural Tours, one card is now an exception to "every card still
+points at `#enquire`": the first card, **Druk Path Trek**, links to its own
+dedicated page, `druk-path-trek.html` (see below) — the other five still
+scroll to this page's own Dark CTA. If any of those five gets its own
+detail page next, repoint its card the same way.
+
+### druk-path-trek.html
+
+The **second** tour-detail page, and the template for a richer variant of
+`tigers-nest-pilgrimage.html`'s pattern — for Trekking Tours' "Druk Path
+Trek" card (6 Days/5 Nights, 4,210m at Phume La, `Snowman Race48.jpg`).
+Modeled on a second Himaquest Travels reference page
+(`jomolhari-trek.html`), again restructured to match and reskinned
+entirely in Altara's own design system — only the content architecture
+carried over. New CSS lives right after `.tour-hero-info` in the "TOUR
+DETAIL PAGES" block, commented as the "Second tour-detail template (richer
+variant)". Reuses almost everything from the Tiger's Nest template
+(`.tour-facts-card`, `.tour-content`/`.tour-highlights`,
+`.itinerary`/`.faq-item` accordion, `.tour-cost-card`,
+`.tour-enquire-card`) plus a few new pieces this longer page needed:
+
+1. **Hero — `.hero.hero--page.hero--tour`**, the single-full-bleed-photo
+   variant (badge + h1 + description over one photo), not
+   `.tour-gallery-hero` — this page instead moves its photo gallery to a
+   **supplementary section near the bottom** of the page (see point 8
+   below), so `<body>` does NOT need the `tour-gallery-page` class here
+   (a real photo already sits behind the header as normal, so the header's
+   default transparent-then-white-on-scroll behavior needs no override).
+   Picking one hero style per page instead of both is the same rule
+   `tigers-nest-pilgrimage.html`'s notes already call out.
+2. **`.tour-facts-card`** — 8 facts instead of 6 (Region, Duration, Max
+   Altitude, Best Season, Difficulty, Accommodation, Meals,
+   Transportation), and **two** buttons under the grid via the new
+   `.tour-facts-actions` wrapper (`display:flex;gap:16px`) instead of one:
+   `.btn.btn-solid-gold` "Book This Trek" (`#enquire`) and
+   `.btn.btn-outline-green` "View All Trekking Tours"
+   (`trekking-tours.html`).
+3. **`.tour-content`** — same Overview + Highlights pattern as Tiger's
+   Nest, then a **third** `.tour-content` block, "What To Pack For The
+   Druk Path Trek" (one plain paragraph, no list).
+4. **`.itinerary`** — 6 accordion days (one per night+1, same
+   `.faq-item` reuse as Tiger's Nest).
+5. **Included/Excluded — `.tour-cost-columns`** — a new 3-column grid
+   (`grid-template-columns:repeat(3,1fr)`, stacks to one column under
+   900px) breaking the cost down into "Trip Cost Includes" (a
+   `.tour-highlights.tour-highlights--stack` gold-check list — the new
+   `--stack` modifier just forces `.tour-highlights` to one column instead
+   of its normal 2-up grid, for use inside a narrower 3-up column), "Trip
+   Cost Excludes" (the new `.tour-excludes` list — same row/gap shape as
+   `.tour-highlights` but with a muted-gray × icon instead of a gold
+   check, matching Tariff's `.tariff-includes--exclude` convention rather
+   than inventing a third checklist style), and "Trek Cost Includes"
+   (another `.tour-highlights--stack` list). Each column is labeled with
+   the new `.tour-detail-subhead` (small uppercase label + bottom rule).
+   Closes with a `.tour-note` about the 15kg trek load allowance.
+6. **A dedicated FAQ accordion** — "Frequently Asked Questions" reusing
+   the exact same `.itinerary`/`.faq-item` markup as the day-by-day
+   itinerary above it (just a second, separate `.itinerary-list` further
+   down the page) — the FAQ IIFE in `script.js` already treats every
+   `.faq-item` on the page as one shared accordion, so this needed no JS
+   changes either. Five trek-specific Q&As.
+7. **`.tour-cost-card`** and **`.tour-enquire-card`** — identical pattern
+   to Tiger's Nest, with the read-only Tour field set to
+   `value="Druk Path Trek"`.
+8. **`.tour-gallery-hero.tour-gallery-hero--footer`** — the exact same
+   gallery/lightbox component `tigers-nest-pilgrimage.html` uses as its
+   hero, just relocated to a section near the bottom of the page (before
+   the footer) and given the new `--footer` modifier
+   (`padding:70px 0` — the same section rhythm every other section on
+   this page uses, since it's no longer sitting flush under a fixed
+   header). Deliberately reuses the exact same element IDs
+   (`tourGalleryTrack`/`tourGalleryPrev`/`tourGalleryNext`/
+   `tourGalleryLightbox` and its child IDs) as Tiger's Nest's gallery —
+   since `script.js`'s slider/lightbox IIFEs look those IDs up with
+   `getElementById`/`querySelector` rather than anything page-scoped, the
+   exact same JS already runs correctly on this page's gallery with zero
+   `script.js` changes. Only one gallery per page still applies — don't
+   add a second on any future page without giving it its own ID set.
+   5 slides: 1 video (`data-video-src`, same brand-film MP4 as Tiger's
+   Nest) + 4 photos (`snowmentrek7.jpg`, `snowmentrek12.jpg`,
+   `snowmentrek10.jpg`, `phobjikha3.jpg`).
+
+`trekking-tours.html`'s Druk Path Trek card links here instead of
+`#enquire` (see above) — keep that in sync if this page is ever renamed or
+removed. No sitewide Dark CTA section, same reasoning as Tiger's Nest — the
+page's own enquiry card is already its CTA.
+
+### festival-tours.html
+
+The header's "Experiences" dropdown "Festival Tours" item is real now — it,
+and every page's matching mobile-nav-sub entry, previously pointed at the
+`index.html#journeys`/`#journeys` placeholder (see the `index.html` Header
+bullet above); all ten other pages plus this one were updated in the same
+pass so every "Festival Tours" link site-wide now points to
+`festival-tours.html`. The homepage's Explore Our Experiences card for this
+category also now links here instead of `#journeys`, and its badge was
+changed from "5 Packages" to "6 Festivals" to match — that slider still
+shows a package/night-style count per card, but "Festivals" reads more
+honestly than "Packages" for content that isn't itself bookable
+inventory. Every page's footer "Who We Serve" column also grew a
+"Festival Travelers" entry alongside the existing "Trekkers"/"Cultural
+Travelers" links, all pointing here — keep both the nav dropdowns and this
+footer list in sync if this page is ever renamed or removed. Luxury Tours
+got the exact same site-wide link-and-footer treatment when
+`luxury-tours.html` was built (see below) — the pattern to repeat if a
+fifth Experiences category is ever added.
+
+Unlike `cultural-tours.html`/`trekking-tours.html`, this page deliberately
+does **not** reuse the `.tour-grid` 6-card-of-bookable-itineraries pattern
+— there's no per-festival detail page for a card to link to, and the
+brief was to talk about the festivals themselves rather than sell six more
+packages. Same header/footer and same
+`.hero.hero--page.hero--center`/`.hero-mist` hero as Cultural/Trekking
+Tours (own photo, `Thimphu Tshechu by Bassem Nimah18.jpg`) — "keep the
+hero section the same" was explicit — but everything under it is new,
+built from mostly-reused components (new CSS only for the festival grid,
+under "FESTIVAL TOURS PAGE" at the very end of `style.css`):
+
+1. **Intro — reuses `.info-lead` verbatim** (the same centered
+   eyebrow+h2+lead-paragraph block Information pages use directly under
+   their hero) explaining what a Tshechu actually is in general terms
+   (the lunar-calendar "tenth day" naming, masked cham dances, the once-
+   a-year community gathering) before naming any specific festival.
+2. **"What Happens At A Tshechu" — reuses `.about`/`.about-media`/
+   `.about-copy`/`.about-link` verbatim**, the exact split-photo editorial
+   block About's Our Story/Our Philosophy sections use, one level deeper
+   than the intro: what cham dances actually depict and why people
+   believe watching them confers a blessing, plus the predawn thongdrel
+   unveiling most Tshechus close on.
+3. **`.festival-section`/`.festival-grid`/`.festival-card`** — the one
+   genuinely new component, a 3-up (2-up/1-up responsive) grid of the six
+   real festivals from
+   `assets/images/image/altara-bhutan-seo-keywords-tour-packages.md`'s
+   Festival Tours list (Paro Tshechu, Thimphu Tshechu, Punakha Drubchen &
+   Tshechu, Jambay Lhakhang Drup, Black-Necked Crane Festival, Gangtey/
+   Wangdue Tshechu), each a bordered white `.festival-card` (photo top,
+   gold month label, title, 2–3 sentence description, an `.about-link`
+   "Enquire About This Festival" reusing that same link style again)
+   rather than a new card design from scratch. Not full-bleed-photo
+   overlay cards like `.tour-card`/`.journey-card` — a plain photo-on-top
+   card instead, deliberately different from the tour-grid pattern per
+   the "don't add contents like other pages" instruction this page was
+   built under.
+4. **`.festival-calendar`/`.festival-calendar-card`** — a centered,
+   faint-gold-tint bordered card (same visual language as
+   `.tour-cost-card`) offering a direct download of
+   `assets/images/documents/tentative_festival_dates_2026.pdf` (opens in
+   a new tab, `target="_blank" rel="noopener"`, no JS needed — a plain
+   link to a static file, same no-backend approach as every `mailto:`
+   link on the site) via a `.btn.btn-solid-gold` button, closing with a
+   `.tour-note`-style caveat (reused as-is) that festival dates are
+   lunar-calendar-based and tentative until reconfirmed at booking — same
+   reasoning Tariff's copy already applies to its own SDF figures. The
+   PDF itself lives in `assets/images/documents/` (a new subfolder of
+   `assets/images/`, alongside `logo/`, `video/`, `image/` and
+   `cloud.png`) — keep any future downloadable document there too rather
+   than starting a second documents folder elsewhere.
+5. **Dark CTA** — same `.dark-cta.dark-cta--photo`/`.contact-pill`
+   pattern and copy structure every tour-category page ends on, its own
+   background image (`Thimphu Tshechu by Bassem Nimah3.jpg`).
+
+No sitewide "Related Tours"-style grid and no per-festival detail pages —
+there's nothing to link a festival card to yet, same reasoning
+`tigers-nest-pilgrimage.html`'s notes give for deferring a "Related Tours"
+sidebar. If a specific festival (Paro Tshechu, say) gets its own detail
+page later, give it its own tour-detail template (following
+`tigers-nest-pilgrimage.html`'s or `druk-path-trek.html`'s pattern) and
+repoint that one card's link the same way `cultural-tours.html`'s Tiger's
+Nest card and `trekking-tours.html`'s Druk Path Trek card already do.
+
+### luxury-tours.html
+
+The fourth (and, for now, last) Experiences category page — Luxury Tours
+was the last of the four header-dropdown items still pointing at the
+`index.html#journeys`/`#journeys` placeholder; that's now gone site-wide
+too (every nav dropdown, every mobile-nav-sub, the homepage's own
+Explore Our Experiences card — which also had its badge corrected from
+"4 Packages" to "6 Journeys" to match — and every footer's "Who We Serve"
+column, which grew a fourth "Luxury Travelers" entry alongside Trekkers/
+Cultural Travelers/Festival Travelers). There is no fifth Experiences
+category left to build.
+
+Same header/footer and same `.hero.hero--page.hero--center`/`.hero-mist`
+hero as Cultural/Trekking/Festival Tours (own photo, `Omba Ney.jpg`) — the
+brief was explicit that the hero stay identical to the other category
+pages. Below it, `.tour-section`/`.tour-head` are reused as-is for the
+section wrapper and centered eyebrow+heading intro (same rhythm as
+Cultural/Trekking's own itinerary sections), but the grid inside is a new
+pair — `.luxury-grid`/`.luxury-card`, at the very end of `style.css` under
+"LUXURY TOURS PAGE" — not `.tour-grid`/`.tour-card`. The brief asked for a
+card modeled on a 2-up screenshot reference (title + description near the
+top, a thin rule + CTA link at the bottom, all on a tall full-bleed photo)
+translated into Altara's own system, **and** asked for the card to
+specifically read as a book. `.luxury-grid`/`.luxury-card` were later
+explicitly asked to match `cultural-tours.html`'s `.tour-grid`/`.tour-card`
+sizing exactly, so they now share those dimensions verbatim — **3-up**
+grid, `20px` gap, `aspect-ratio:3/5`, the same `900px`/`580px`
+breakpoints — rather than the smaller, capped-width 2-up layout an
+earlier pass used; don't shrink this back down to a 2-up/narrower layout
+without being asked again. What stays different from `.tour-card` is
+everything that makes it read as a book:
+
+- `.luxury-card` carries a plain soft `box-shadow` for lift, not a
+  hard-edged one: an earlier version used a stepped, doubled `box-shadow`
+  (offset copies in `var(--color-offwhite)` *plus* a `1px var(--color-rule)`
+  line on each) meant to look like a couple of page edges peeking out from
+  the corner, but the rule-colored line read as a rectangular border/frame
+  around the whole card rather than "pages," so it was removed — don't
+  reintroduce a `var(--color-rule)` line on this card from memory.
+- `.luxury-card-frame` is the inner `overflow:hidden` layer that clips the
+  photo (`.bg`) and its gradient overlay (`.luxury-card-frame::after` —
+  dark at *both* the top and the bottom, clear through the middle, since
+  text sits at both edges here, unlike `.tour-card`'s bottom-only
+  gradient).
+- `.luxury-card-spine` is a solid `var(--color-primary-dark)` strip down
+  the left edge with a thin gold foil rule and an inset shadow, styled
+  like a hardcover's binding. `.luxury-card-body`'s left padding starts
+  clear of it, so the title reads as printed beside the spine rather than
+  over it.
+- `.luxury-card-ribbon` is a small gold tab hanging from the top edge,
+  `clip-path`-cut to a V at the bottom like a real ribbon bookmark.
+- `.luxury-card-text h3` uses `var(--font-body)` bold uppercase (18px,
+  22px at 900px, matching `.tour-card-body h3`'s own breakpoint bump)
+  — **not** `var(--font-display)` (League Gothic), which an earlier
+  version used and which read noticeably heavier/bolder than every other
+  card title site-wide (`.tour-card-body h3`, `.journey-title`,
+  `.blog-card-body h3` all use font-body, never font-display, for card
+  titles). Keep using font-body here even though this card is otherwise a
+  bespoke component — font-display stays reserved for `<h1>`/`<h2>`
+  section headings, not card titles.
+- Hover just lifts the card (`translateY(-6px)`, shadow deepens slightly)
+  and zooms the photo, matching every other card's hover language
+  site-wide — the book cues themselves are visible at rest, not only
+  revealed on hover.
+
+Six real luxury circuits (from the same
+`assets/images/image/altara-bhutan-seo-keywords-tour-packages.md` brief
+used for the other category pages): Amankora Journey, Six Senses Wellness
+Journey, COMO Uma Paro & Punakha, Luxury Honeymoon Package, Heritage Lodge
+Tour (Taj Tashi/Zhiwa Ling), Private Helicopter & Lodge Tour. None of
+these link to a dedicated detail page yet (all six point at this page's
+own `#enquire` Dark CTA) — same reasoning as the five non-detail-page
+cards on Cultural/Trekking Tours; give one its own tour-detail template
+and repoint its card the same way if it ever needs one. No literal
+photo of a specific helicopter or hotel brand's own property was used for
+the Helicopter/Heritage cards (a remote lake and an aerial chorten shot
+instead) — avoid a photo that reads as a specific operator's branded
+aircraft or a specific hotel's actual property unless that partnership is
+real and disclosed, the same caution the Partners & Affiliates marquee's
+real, disclosed logos already follow.
 
 ### Information pages (about-bhutan.html, tariff.html, faq.html)
 
@@ -567,11 +941,25 @@ is no translated content anywhere on the site yet.
 
 ## Interactions (all in `script.js`, vanilla JS, one IIFE per feature)
 
-- Header scroll-state + logo swap (throttled via `requestAnimationFrame`)
+- Header scroll-state + logo swap (throttled via `requestAnimationFrame`) —
+  also now hides the whole header on scroll-down and slides it back in on
+  scroll-up (`.header-hidden`, `transform:translateY(-100%)` in
+  `style.css`), as a second class toggled independently of `.scrolled` off
+  the same scroll tick, not a replacement for it. Direction comes from the
+  raw delta between this tick's `scrollY` and the last one (a `±6px`
+  dead-band absorbs momentum/trackpad jitter so it doesn't flicker), the
+  header always stays visible inside the top `120px` (`REVEAL_ZONE`) so it
+  never hides right at the top of a page, and it's forced visible whenever
+  `#mobileNav` has `.is-open` so the panel's own close button (which lives
+  inside the header) can't slide away mid-interaction. `update()` still
+  runs once on load in addition to every scroll tick, for the same
+  bfcache/anchor-landing reason noted below.
 - `initCardSlider(trackId, prevId, nextId, cardClass)` — generic scroll-snap
-  + prev/next-button slider, called once for the Journeys slider and once
-  for the Activities slider. Add any future horizontal card slider as a
-  third call to this same function rather than writing a new one.
+  + prev/next-button slider, called for the Journeys, Activities, and Blog
+  sliders on the homepage, and the tour-gallery-hero slider on
+  `tigers-nest-pilgrimage.html` (four calls total so far). Add any future
+  horizontal card slider as a new call to this same function rather than
+  writing a new one.
 - Explore Bhutan map: district hover tooltip, scroll-pinned/timed flight +
   border-gate animation (see above)
 - `IntersectionObserver` scroll-reveal on `.reveal` elements (skipped under
@@ -593,9 +981,29 @@ guidelines doc has not been updated to match.
 - All CSS goes in `style.css`, all JS goes in `script.js` — do not add
   inline `<style>`/`<script>` blocks back into the HTML pages.
 - All colors/fonts are defined once as CSS custom properties in `:root` —
-  change values there, not at each usage site. `--color-cream` was removed
-  deliberately (all section backgrounds are now plain white with
-  border-based separation) — don't reintroduce a cream/off-white token.
+  change values there, not at each usage site. A `--color-cream` token was
+  removed early on (section backgrounds were plain white then, border-based
+  separation only) and stayed out for a long time — that's since been
+  superseded: `--color-offwhite` (`#FAFAF8`) now exists and is deliberately
+  what `body` and every section wrapper use for their background (`.about`,
+  `.values-section`, `.team-section`, `.tour-section`, `.activities-section`,
+  `.testimonials`, `.explore-bhutan`, `.why-us`, `.blog`, `.faq`,
+  `header.scrolled`, `.info-lead`, `.fact-section`, `.enquire-split`,
+  `.contact-band`, `.enquire-map-section`, `.partners`, `.itinerary`,
+  `.tour-map-section`, `.tour-enquire`, `.tour-facts-section`,
+  `.tour-content`, `.tour-cost`, `.tour-hero-info` — i.e. every section
+  background site-wide). `--color-white` (`#FFFFFF`) stays pure white and
+  is still what every **card/surface floating on that background** uses
+  (`.value-card`, `.bhutan-fact-card`, `.fact-card`, `.tariff-card`,
+  `.enquire-form-card`, `.nav-dropdown-panel`), plus text-on-dark and
+  button/icon states (`.btn-outline-white:hover`, `.journey-btn:hover`,
+  `.tour-gallery-play:hover`, `#tourGalleryPrev`/`#tourGalleryNext`,
+  `.hamburger-btn span`) — the barely-there contrast between the two
+  (off-white page, pure-white card) is the point, so a card reads as
+  faintly lifted off the page rather than flush with it. When adding a new
+  full-width section, give it `background:var(--color-offwhite)`; when
+  adding a new bordered card/popover/button state, use
+  `background:var(--color-white)`.
 - Reference real files only from `assets/images/image/` (not `assets/images/`
   directly — that only holds `logo/`, `video/`, and `cloud.png` now).
   Filenames are wildly inconsistent (mixed case, spaces, camera-default names
