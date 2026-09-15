@@ -38,10 +38,17 @@ Altara/
 │                                     plain photo (spine, ribbon bookmark, plain
 │                                     soft shadow — no border); the fourth and
 │                                     last Experiences category page
+├── why-bhutan.html                 # Information page — persuasive "why go"
+│                                     page (Gross National Happiness, living
+│                                     Buddhism, untouched culture), first in
+│                                     the Information dropdown, ahead of
+│                                     about-bhutan.html's country-facts page
 ├── about-bhutan.html              # Information page — country primer, quick
 │                                     facts, best time to visit
 ├── tariff.html                    # Information page — Sustainable Development
-│                                     Fee pricing, what's included/not, visa
+│                                     Fee pricing (redesigned to a single big
+│                                     stat, not three bordered cards),
+│                                     what's included/not, visa
 ├── faq.html                       # Information page — full categorized FAQ
 │                                     accordion (Planning, Visa & Entry, Health
 │                                     & Practical)
@@ -110,7 +117,8 @@ early `if(!el) return;` inside its own IIFE so it's harmless to include
    `.nav-item`/`.nav-dropdown` pattern too: the trigger itself still links to
    `#why`/`index.html#why` (the homepage's Why Altara section, exactly like
    "Experiences" still links to `#journeys`), and its dropdown holds the
-   three Information pages — About Bhutan, Tariff, FAQ (see below). On
+   four Information pages — Why Bhutan?, About Bhutan, Tariff, FAQ (see
+   below), in that order. On
    mobile the same links live in two separate `.mobile-nav-sub` blocks, one
    per trigger — `script.js`'s mobile-menu IIFE pairs every
    `.mobile-nav-toggle` with its own very next `.mobile-nav-sub` sibling
@@ -287,6 +295,19 @@ full-viewport title-only hero, its background image set inline via
 overrides `.hero--page`'s horizontal alignment only — it stays vertically
 bottom, just centered instead of left; both inner pages' heroes now use
 this). It also has a `.hero-mist` overlay — see the `.hero-mist` note below.
+`.tour-head` (eyebrow + h2 above the grid) had its `.eyebrow.eyebrow--accent`
+("Six Ways In") removed — same for `trekking-tours.html`'s ("Six Trails
+In"), `luxury-tours.html`'s ("Six Private Circuits") and
+`festival-tours.html`'s `.festival-head` ("Worth Timing Your Trip
+Around"), the four Experiences-category child pages' shared one-eyebrow-
+per-page pattern. Only this page's `.tour-head` gained a short `<p>` in
+its place (`.tour-head p`, styled like `.info-lead p`) — a couple of
+sentences on what Cultural Tours actually means day to day; the other
+three pages' headings were left standing alone with no replacement text.
+`festival-tours.html`'s other three eyebrows (its `.info-lead` intro, the
+"What Happens At A Tshechu" `.about-copy` block, and the calendar-download
+card) were deliberately left as-is — only the one structurally analogous
+to `.tour-head` came out.
 Then a 6-card `.tour-grid`. `.tour-card` is a **full-bleed portrait image
 card** (the white-card-with-icons version was tried and reverted) —
 `aspect-ratio:3/5`, the whole card is an `<a>` with a `.bg` div for the
@@ -769,9 +790,58 @@ aircraft or a specific hotel's actual property unless that partnership is
 real and disclosed, the same caution the Partners & Affiliates marquee's
 real, disclosed logos already follow.
 
-### Information pages (about-bhutan.html, tariff.html, faq.html)
+### why-bhutan.html
 
-The header's "Information" dropdown (see above) links to these three. Same
+A fourth Information page, added ahead of `about-bhutan.html` in the
+dropdown — deliberately persuasive ("why go") rather than informational
+("facts about the country"), so it doesn't duplicate About Bhutan's Quick
+Facts/geography/best-time-to-visit content; the two are meant to be read
+back to back, this one first. Same header/footer/hero pattern as the other
+Information pages. Content, top to bottom, built entirely from reused
+components (no new CSS):
+
+1. **Intro — `.info-lead`** — why a "measures progress differently"
+   country behaves the way it does on the ground (capped rooms/roads,
+   opened to tourism only in 1974), teeing up the reasons below.
+2. **"Gross National Happiness" — `.about`** — the four-pillars policy
+   framework and what it actually changes about a trip here (no resort
+   strips, no billboards, no fast food), tied explicitly to Altara's own
+   homepage tagline ("travel as transformation") to connect the country's
+   philosophy to the brand's.
+3. **"The Last Vajrayana Kingdom" — `.about.about--reverse`** — Bhutan as
+   the only country where Vajrayana Buddhism is still the living state
+   religion, Taktsang (Tiger's Nest) as the emblem, with an inline
+   `.faq-contact-link` (the existing small gold-underline in-paragraph
+   link style, not the block-level `.about-link`) pointing to
+   `festival-tours.html` for anyone who wants to time a trip around a
+   Tshechu.
+4. **"What Else Sets It Apart" — reuses `.values-section`/`.value-grid`/
+   `.value-card` verbatim**, About page's own 3-card component, for three
+   more reasons that don't need a full photo treatment: untouched culture,
+   the SDF-funded high-value/low-impact tourism model (another
+   `.faq-contact-link` to `tariff.html`), and carbon-negative status.
+5. **A stat strip — reuses `.fact-section--tight`/`.season-grid`/
+   `.bhutan-fact-card`** (About Bhutan's own "Best Time To Visit" number
+   treatment) for four quick figures: 1974 (first opened to tourism), 70%+
+   (constitutional forest cover), 20 (dzongkhags), 3,120m (Taktsang's
+   elevation).
+6. **Dark CTA** — same pattern, own photo
+   (`Punakha Dzongkhag Header.jpg`).
+
+Content themes (GNH, living Buddhism, untouched culture, high-value/low-impact
+tourism, carbon-negative status) were drawn from the shape of Breathe
+Bhutan's own "Why Travel Bhutan" page as a starting brief, then written
+fresh in Altara's own voice and cross-linked to Altara's own pages — not
+copied. The header/footer "Information" dropdown, every page's matching
+mobile-nav-sub, and every footer's "Company" column all got a "Why
+Bhutan?" entry (placed first, before "About Bhutan") in the same pass —
+keep all three in sync if this page is ever renamed or removed, the same
+convention every other new page in this project has followed.
+
+### Information pages (about-bhutan.html, why-bhutan.html, tariff.html, faq.html)
+
+The header's "Information" dropdown (see above) links to these four (in
+dropdown order: Why Bhutan?, About Bhutan, Tariff, FAQ). Same
 header/footer/hero/`.dark-cta.dark-cta--photo` pattern as the tour pages,
 but the content section underneath is page-specific, built from a small
 set of reusable "INFORMATION PAGES" components added to `style.css` (all
@@ -788,12 +858,26 @@ kept in one block near the end of the file):
   `.fact-grid` — that one deliberately reuses `.bhutan-fact-card`'s own
   number/label styling from the homepage's Explore Bhutan map sidebar
   rather than inventing a third card style).
-- `.tariff-grid`/`.tariff-card`/`.tariff-price` — Tariff's three SDF
-  pricing cards; `.tariff-card--featured` puts a gold border on the
-  standard-adult-rate card. `.tariff-includes` is the two-column
-  included/not-included checklist below it (`.tariff-includes--exclude` on
-  the second `<ul>` grays out its check icons). `.tariff-note` is the
-  visa/payment paragraph block underneath, styled like `.faq-note`.
+- Tariff's SDF pricing was redesigned to be simpler — a first pass with
+  three bordered `.tariff-card`s, a separate regional-rate caption, a
+  bordered-rule two-column checklist and its own bordered visa/payment note
+  (four distinct boxed treatments stacked on one page) was flagged as too
+  busy and replaced. `.tariff-stat-section`/`.tariff-stat`/
+  `.tariff-stat-figure`/`.tariff-stat-secondary` is what's there now: one
+  large `$100` display-type figure (the "impactful" part) with a short
+  label, then three smaller secondary figures (child rate, under-6 exempt,
+  regional rate) in a plain row underneath a single rule — no cards, no
+  boxes. The Included/Not Included list below it reuses
+  `.tour-highlights`/`.tour-excludes` (druk-path-trek.html's border-free
+  check/× list, inside a new plain `.tariff-simple-grid` two-column
+  wrapper) instead of the old bordered-row `.tariff-includes` component,
+  and the visa/payment paragraph reuses `.tour-note`'s plain gold-left-border
+  caveat instead of its own bordered block. Don't reintroduce
+  `.tariff-grid`/`.tariff-card`/`.tariff-price`/`.tariff-includes`/
+  `.tariff-note`/`.tariff-regional-note` from memory — this fully replaces
+  them, and the reasoning (fewer boxed treatments per page, reuse the
+  simpler existing list components) applies to any future redesign request
+  on this page too.
 - `.faq-category`/`.faq-category-head` — wraps each themed group of
   questions on faq.html (Planning & Booking, Visa & Entry, Health &
   Practical) around an otherwise-unmodified `.faq-columns`/`.faq-item`
@@ -812,8 +896,9 @@ as fixed. FAQ's three categories combine the homepage's existing 6-question
 teaser (`index.html#faq`, left as-is) with new questions — the homepage's
 "View All FAQs" button (previously a `href="#"` placeholder) now points to
 `faq.html`. Every "Company" footer column site-wide got these three pages
-added under "Our Story" — keep that list in sync with the Information
-dropdown if any of the three is ever renamed or removed.
+(now four, with `why-bhutan.html`) added under "Our Story" — keep that
+list in sync with the Information dropdown if any of the four is ever
+renamed or removed.
 
 ### enquire.html
 
