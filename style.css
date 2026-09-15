@@ -681,6 +681,13 @@
     padding:130px 0;
   }
   .tour-head{max-width:640px;margin:0 auto 64px;text-align:center;}
+  /* Optional short lead paragraph under a .tour-head h2 — cultural-tours.html
+     is the only page using this so far (its own eyebrow was removed and
+     replaced with a couple of sentences of context instead); same
+     treatment as .info-lead p. Not every .tour-head needs one — omit it,
+     as trekking-tours.html/luxury-tours.html do, when the heading stands
+     fine on its own. */
+  .tour-head p{font-size:15px;line-height:1.85;color:var(--color-body);margin-top:18px;}
   .tour-grid{
     display:grid;
     grid-template-columns:repeat(3,1fr);
@@ -1910,88 +1917,89 @@
     .season-grid{grid-template-columns:repeat(2,1fr);}
   }
 
-  /* Tariff: SDF pricing cards */
-  .tariff-grid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:32px;
+  /* Tariff: one big SDF figure instead of three bordered cards — "simple
+     but impactful" replaced a busier first pass (three .tariff-card
+     boxes + a regional-rate caption + a bordered-rule two-column
+     checklist + a separate bordered note block, four distinct boxed
+     treatments stacked in one page). Don't reintroduce .tariff-grid/
+     .tariff-card/.tariff-price/.tariff-includes/.tariff-note/
+     .tariff-regional-note from memory — this replaces all of them. The
+     Included/Not Included list now reuses .tour-highlights/.tour-excludes
+     (druk-path-trek.html's simpler, border-free check/× list) instead of
+     a bespoke bordered-row component, and the visa/payment note reuses
+     .tour-note's plain gold-left-border caveat instead of its own bordered
+     block. */
+  .tariff-stat-section{background:var(--color-offwhite);padding:10px 0 100px;}
+  .tariff-stat{
+    display:flex;
+    align-items:flex-end;
+    flex-wrap:wrap;
+    gap:20px 36px;
+    padding-bottom:36px;
+    border-bottom:1px solid var(--color-rule);
   }
-  .tariff-card{
-    background:var(--color-white);
-    border:1px solid var(--color-rule);
-    padding:48px 30px;
-    text-align:center;
-    transition:border-color .3s var(--ease), transform .3s var(--ease);
-  }
-  .tariff-card:hover{border-color:var(--color-accent-gold);transform:translateY(-6px);}
-  .tariff-card--featured{border-color:var(--color-accent-gold);}
-  .tariff-price{
+  .tariff-stat-figure{
     font-family:var(--font-display);
-    font-size:46px;
+    font-size:130px;
+    line-height:0.82;
     color:var(--color-primary-dark);
-    line-height:1;
-    margin:16px 0 8px;
   }
-  .tariff-price sup{
-    font-size:20px;
+  .tariff-stat-figure sup{
+    font-size:46px;
+    color:var(--color-accent-gold);
     margin-right:2px;
+    vertical-align:26px;
   }
-  .tariff-price span{
-    display:block;
+  .tariff-stat-label{
     font-family:var(--font-body);
-    font-size:12px;
+    font-size:13px;
     font-weight:600;
     letter-spacing:0.1em;
     text-transform:uppercase;
     color:var(--color-gray-muted);
-    margin-top:6px;
+    max-width:230px;
+    padding-bottom:16px;
+    line-height:1.6;
   }
-  .tariff-card h3{margin-bottom:4px;}
-  .tariff-card p{font-size:13.5px;color:var(--color-body);line-height:1.7;margin-top:14px;}
-  @media (max-width:900px){
-    .tariff-grid{grid-template-columns:1fr;gap:20px;}
+  .tariff-stat-secondary{
+    display:flex;
+    flex-wrap:wrap;
+    gap:36px 60px;
+    margin-top:40px;
+  }
+  .tariff-stat-secondary-item strong{
+    display:block;
+    font-family:var(--font-display);
+    font-size:32px;
+    color:var(--color-primary-dark);
+    margin-bottom:4px;
+  }
+  .tariff-stat-secondary-item span{
+    display:block;
+    font-family:var(--font-body);
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--color-gray-muted);
+  }
+  @media (max-width:580px){
+    .tariff-stat-figure{font-size:84px;}
+    .tariff-stat-figure sup{font-size:30px;vertical-align:14px;}
+    .tariff-stat-secondary{gap:28px 40px;}
   }
 
-  /* Tariff: What's Included / Not Included two-column checklist */
-  .tariff-includes{
+  /* Tariff: simple two-column wrapper for the Included/Not Included
+     lists — the lists themselves are .tour-highlights/.tour-excludes,
+     reused as-is. */
+  .tariff-simple-grid{
     display:grid;
     grid-template-columns:1fr 1fr;
-    gap:0 60px;
-    margin-top:90px;
+    gap:16px 64px;
+    margin-top:56px;
   }
-  .tariff-includes h3{margin-bottom:22px;}
-  .tariff-includes li{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    padding:14px 0;
-    border-bottom:1px solid var(--color-rule);
-    font-size:14px;
-    color:var(--color-body);
-  }
-  .tariff-includes li svg{flex-shrink:0;width:16px;height:16px;color:var(--color-accent-gold);}
-  .tariff-includes--exclude li svg{color:var(--color-gray-muted);}
-  @media (max-width:900px){
-    .tariff-includes{grid-template-columns:1fr;gap:50px;margin-top:60px;}
-  }
-
-  /* Tariff: visa/payment practical notes, styled like .faq-note */
-  .tariff-note{
-    margin-top:70px;
-    padding-top:50px;
-    border-top:1px solid var(--color-rule);
-  }
-  .tariff-note h3{margin-bottom:16px;}
-  .tariff-note p{font-size:14px;color:var(--color-body);line-height:1.85;max-width:760px;margin-bottom:16px;}
-
-  /* Small centered caption under the SDF pricing cards (regional-traveler
-     rate note) */
-  .tariff-regional-note{
-    text-align:center;
-    max-width:640px;
-    margin:36px auto 0;
-    font-size:13px;
-    color:var(--color-gray-muted);
+  @media (max-width:700px){
+    .tariff-simple-grid{grid-template-columns:1fr;gap:40px;}
   }
 
   /* FAQ page: repeatable category blocks, each its own eyebrow + heading
