@@ -1121,7 +1121,18 @@
       position:sticky;
       top:0;
       height:100vh;
-      padding:60px 0;
+      /* Asymmetric — more top clearance than bottom. This section pins
+         flush against the viewport top (top:0), so with equal 60px
+         padding the fixed header (its scrolled state is ~70px tall, plus
+         blur/box-shadow) could sit directly over "Routes Into The
+         Kingdom." Since .explore-bhutan's background is the same
+         off-white header.scrolled uses, that overlap read as the heading
+         fading out rather than an obviously covered section — the same
+         mismatch already fixed for the sub-640px mobile layout below;
+         this is the desktop/pinned equivalent of that fix. Flex
+         align-items:center still centers the content within the padded
+         box, just shifted down from a taller top inset. */
+      padding:110px 0 60px;
       display:flex;
       align-items:center;
       overflow:hidden;
@@ -1583,7 +1594,7 @@
     font-weight:700;
     letter-spacing:0.1em;
     text-transform:uppercase;
-    color:var(--color-accent-gold);
+    color:var(--color-white);
     margin-bottom:10px;
   }
   .blog-card-body h3{
@@ -1594,27 +1605,13 @@
     text-transform:none;
     color:var(--color-white);
     line-height:1.35;
-    margin-bottom:10px;
-  }
-  /* Description + CTA stay hidden until the card is hovered — same
-     resting-clean / reveal-on-interaction technique .activity-info p /
-     .activity-cta already use on the Activities slider, so the card
-     shows only date, author and title by default. */
-  .blog-card-body p{
-    font-size:13.5px;
-    color:rgba(255,255,255,0.8);
-    line-height:1.7;
-    max-height:0;
-    opacity:0;
     margin-bottom:0;
-    overflow:hidden;
-    transition:opacity .4s var(--ease), max-height .4s var(--ease), margin-bottom .4s var(--ease);
   }
-  .blog-card:hover .blog-card-body p{
-    max-height:100px;
-    opacity:1;
-    margin-bottom:16px;
-  }
+  /* Card shows only the date and title at rest — no author, no
+     description (both removed) — and reveals just the "Read More" CTA
+     below the title on hover, same resting-clean / reveal-on-interaction
+     technique .activity-info p/.activity-cta use on the Activities
+     slider. */
   .blog-card-link{
     display:block;
     font-family:var(--font-body);
@@ -1644,6 +1641,26 @@
   }
   @media (max-width:580px){
     .blog-card{flex-basis:85%;}
+  }
+
+  /* ================= BLOG PAGE (blog.html) ================= */
+  /* The full journal listing — .blog/.blog-card above are the homepage's
+     teaser slider; this page reuses .blog-card verbatim (its `flex`
+     property is simply ignored inside a grid container, so no override
+     was needed) in a plain static grid instead, same pattern as
+     .tour-grid. */
+  .blog-section{background:var(--color-offwhite);padding:130px 0;}
+  .blog-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:32px;
+  }
+  @media (max-width:900px){
+    .blog-section{padding:90px 0;}
+    .blog-grid{grid-template-columns:repeat(2,1fr);gap:20px;}
+  }
+  @media (max-width:580px){
+    .blog-grid{grid-template-columns:1fr;}
   }
 
   /* ================= FAQ ================= */
@@ -3018,4 +3035,183 @@
   @media (max-width:580px){
     .luxury-grid{grid-template-columns:1fr;}
     .luxury-card{aspect-ratio:3/4;}
+  }
+
+  /* ================= BLOG ARTICLE PAGE ================= */
+  /* Individual article pages (inside-tigers-nest.html is the first) —
+     modeled on a Breathe Bhutan blog-post reference the user shared,
+     translated into Altara's own system rather than copied. The hero is
+     the standard `.hero.hero--page.hero--center`/`.hero-mist` every
+     other inner page uses (title overlaid on the photo) — an earlier
+     pass gave this page its own plain-image-then-title-below hero
+     instead, matching the reference more literally, but that was
+     reverted in favor of staying consistent with every other page's
+     hero; don't reintroduce a bespoke `.article-hero`/`.article-header`
+     hero from memory. `.article-meta` (byline/date) now sits at the top
+     of `.article-body` instead, since the title itself lives in the hero.
+     A numbered "1/2/3..." list replaces the reference's
+     numbered-experience-list for this page's own tips structure, and a
+     share row + sidebar close the piece out before the standard Dark
+     CTA. Reading column stays a narrower 720px — `.tour-content-inner`'s
+     1100px column (built for itinerary/highlights prose) reads too wide
+     for a plain editorial article. */
+  .article-section{background:var(--color-offwhite);padding:130px 0;}
+  /* Main article column + sidebar, side by side — the reference's own
+     two-column layout (article left, "Related Posts" list pinned in a
+     card on the right) rather than the full-width related-posts grid an
+     earlier pass placed below the article instead. */
+  .article-layout{
+    display:grid;
+    grid-template-columns:1fr 340px;
+    gap:60px;
+    max-width:1100px;
+    margin:0 auto;
+    align-items:start;
+  }
+  .article-body{max-width:720px;}
+  .article-meta{
+    display:block;
+    font-family:var(--font-body);
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--color-accent-gold);
+    margin-bottom:28px;
+  }
+  .article-body > p{font-size:15px;line-height:1.9;color:var(--color-body);margin-bottom:22px;}
+
+  /* Numbered tips list — the translated version of the reference page's
+     numbered-experience list. A plain rule between items (not cards),
+     matching the site's existing rule-line list language (.faq-item,
+     .tariff-includes li before it was retired) rather than boxing each
+     one. */
+  .article-list{list-style:none;margin:44px 0;padding:0;}
+  .article-list li{
+    display:flex;
+    gap:24px;
+    padding:28px 0;
+    border-top:1px solid var(--color-rule);
+  }
+  .article-list li:last-child{border-bottom:1px solid var(--color-rule);}
+  .article-list-number{
+    flex:none;
+    width:44px;
+    font-family:var(--font-display);
+    font-size:30px;
+    line-height:1;
+    color:var(--color-accent-gold);
+  }
+  .article-list-content h3{
+    font-size:18px;
+    letter-spacing:0.3px;
+    margin-bottom:8px;
+  }
+  .article-list-content p{font-size:14.5px;line-height:1.8;color:var(--color-body);margin:0;}
+  /* "What To Bring" reuses .tour-highlights verbatim as one list item's
+     content, just stacked to one column (--stack, the same modifier
+     druk-path-trek.html's cost breakdown already uses). */
+  .article-list-content .tour-highlights{margin-top:4px;}
+
+  /* Share row — the translated version of the reference's "Love This?
+     Share It" prompt. Plain mailto:/wa.me/share-URL links, no JS, same
+     no-backend approach every other link on the site already uses. */
+  .article-share{
+    margin-top:20px;
+    padding-top:32px;
+    border-top:1px solid var(--color-rule);
+    display:flex;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:18px;
+  }
+  .article-share-label{
+    font-family:var(--font-body);
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--color-gray-muted);
+  }
+  .article-share-links{display:flex;gap:10px;}
+  .article-share-links a{
+    width:38px;height:38px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border:1px solid var(--color-rule);
+    color:var(--color-primary-dark);
+    transition:background .3s var(--ease), border-color .3s var(--ease), color .3s var(--ease);
+  }
+  .article-share-links a svg{width:16px;height:16px;}
+  .article-share-links a:hover{background:var(--color-accent-gold);border-color:var(--color-accent-gold);color:var(--color-white);}
+
+  /* Sidebar — a bordered white card floating on the section's off-white
+     background, same "lifted card" contrast every other card on the site
+     uses. `position:sticky` keeps it in view alongside the article as the
+     page scrolls, dropped on mobile along with the rest of the two-column
+     layout. */
+  .article-sidebar{
+    background:var(--color-white);
+    border:1px solid var(--color-rule);
+    padding:28px;
+    position:sticky;
+    top:110px;
+  }
+  .article-sidebar-heading{
+    font-family:var(--font-body);
+    font-size:16px;
+    font-weight:700;
+    letter-spacing:0.5px;
+    text-transform:none;
+    color:var(--color-primary-dark);
+    margin-bottom:20px;
+  }
+  .article-sidebar-list{display:flex;flex-direction:column;}
+  .article-sidebar-item{
+    display:flex;
+    gap:14px;
+    padding:16px 0;
+    border-top:1px solid var(--color-rule);
+    transition:opacity .3s var(--ease);
+  }
+  .article-sidebar-item:first-child{border-top:none;padding-top:0;}
+  .article-sidebar-item:last-child{padding-bottom:0;}
+  .article-sidebar-item:hover{opacity:0.75;}
+  .article-sidebar-thumb{flex:none;width:72px;height:72px;overflow:hidden;}
+  .article-sidebar-thumb img{width:100%;height:100%;object-fit:cover;}
+  .article-sidebar-content h3{
+    font-family:var(--font-body);
+    font-size:13.5px;
+    font-weight:700;
+    letter-spacing:0.2px;
+    text-transform:none;
+    color:var(--color-primary-dark);
+    line-height:1.4;
+    margin-bottom:6px;
+  }
+  .article-sidebar-date{
+    display:block;
+    font-family:var(--font-body);
+    font-size:10.5px;
+    font-weight:600;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--color-gray-muted);
+  }
+  .article-sidebar .btn{
+    display:block;
+    width:100%;
+    text-align:center;
+    margin-top:22px;
+  }
+
+  @media (max-width:900px){
+    .article-layout{grid-template-columns:1fr;gap:56px;}
+    .article-sidebar{position:static;}
+  }
+  @media (max-width:580px){
+    .article-section{padding:90px 0;}
+    .article-list li{gap:16px;}
+    .article-list-number{width:34px;font-size:24px;}
   }
