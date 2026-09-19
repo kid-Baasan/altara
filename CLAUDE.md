@@ -54,6 +54,14 @@ Altara/
 │                                     & Practical)
 ├── enquire.html                   # Enquire Now page — split contact form,
 │                                     "Reach Us Directly" icon row, embedded map
+├── blog.html                      # Journal page — the homepage's .blog
+│                                     teaser slider content (same six posts)
+│                                     as a plain static grid; the "Blog" nav
+│                                     link's real destination on every page now
+├── inside-tigers-nest.html        # The first individual article page, for
+│                                     the "Inside Tiger's Nest" Journal post —
+│                                     both blog.html's and index.html's first
+│                                     blog card link here now
 ├── style.css                      # ALL CSS for the whole site (every page)
 ├── script.js                      # ALL JS for the whole site (every page)
 ├── altara-brand-guidelines.html   # Standalone brand reference doc (not linked
@@ -189,7 +197,15 @@ early `if(!el) return;` inside its own IIFE so it's harmless to include
    The Kingdom," and since the colors match it read as the heading fading
    out rather than being obviously covered, not as a section that's
    actually further down the page. Don't shrink this back to match Blog's/
-   FAQ's `80px 0` without re-checking clearance. Related: the header's own
+   FAQ's `80px 0` without re-checking clearance. The desktop/pinned
+   version (`min-width:901px`, `.explore-bhutan{position:sticky;top:0;
+   height:100vh;...}`) had the exact same bug, worse — that variant sits
+   flush against the viewport top with only `60px 0` padding, so the
+   heading was even more directly under the fixed header there; it's now
+   `padding:110px 0 60px` (asymmetric — more top clearance only, `flex`
+   `align-items:center` still centers the content within the padded box,
+   just shifted down). Both fixes address the same root mismatch; check
+   both if this section's header ever goes invisible/faded again. Related: the header's own
    scroll-state IIFE (`script.js`) now also runs its `update()` once on
    load, not only on the next `scroll` event — previously a page that
    loaded already scrolled (mobile back/forward nav, bfcache, landing on
@@ -207,16 +223,18 @@ early `if(!el) return;` inside its own IIFE so it's harmless to include
    image-on-top-then-text card an earlier version used — don't recreate
    that older `.blog-card-image`/`.blog-card-tag` version from memory.
    Six cards now (not three) so the slider has real overflow to scroll
-   through, not just three cards that already fit one view. Each card: a
-   gold `.blog-card-meta` line (date + "By <author>" — bylined to
-   already-established About-page team members, Sonam Tenzin/Tshering
-   Wangmo/Karma Dorji on rotation, rather than inventing new names), a
-   white title, and a description + "Read More" link that both stay
-   hidden until the card is hovered (`.blog-card-body p`/`.blog-card-link`,
-   `max-height`+`opacity` transition — the exact same resting-clean /
-   reveal-on-hover technique `.activity-info p`/`.activity-cta` already
-   use on the Activities slider, just with a top-rule instead of an
-   underline for the link). Only the meta line and title show at rest.
+   through, not just three cards that already fit one view. Each card at
+   rest shows only a white `.blog-card-meta` date (no byline anymore — an
+   earlier version added "By <author>", bylined to already-established
+   About-page team members on rotation, which was later dropped; don't
+   reintroduce the author back into `.blog-card-meta` from memory) and a
+   white title — no description paragraph either (`.blog-card-body p` was
+   removed entirely, not just hidden; don't reintroduce a `<p>` inside
+   `.blog-card-body`). Only the "Read More" link
+   (`.blog-card-link`, `max-height`+`opacity` transition — the same
+   resting-clean / reveal-on-hover technique `.activity-cta` uses on the
+   Activities slider, just with a top-rule instead of an underline)
+   reveals on hover, directly under the title.
    `.blog-head` also grew a
    `.blog-subtitle` line under the h2, and its right side is now
    `.blog-arrows` (two `.slider-arrow`s, `position:static` overriding
@@ -227,8 +245,12 @@ early `if(!el) return;` inside its own IIFE so it's harmless to include
    gradient also darkens across the **whole** card on hover
    (`.blog-card:hover::after`, same gradient shape just raised to
    `rgba(14,21,18,0.55)→0.92)` instead of `0→0.9`) rather than staying
-   only a bottom band, so the description/CTA revealed on hover stay
-   readable no matter where they land on the photo.
+   only a bottom band, so the CTA revealed on hover stays
+   readable no matter where it lands on the photo. This teaser section
+   itself is untouched, but the header/footer "Blog" link site-wide no
+   longer points here (`index.html#blog`/`#blog`) — it now goes to the
+   real `blog.html` page (see below), which reuses these same six posts
+   in a plain static grid.
 9. **Partners & Affiliates** (`.partners`) — an infinite CSS marquee of 6
     partner/affiliate logos (Bhutan Airlines, Drukair, Tourism Council of
     Bhutan, ABTO, Guide Association of Bhutan, Hotel Jakar View), each
@@ -900,6 +922,125 @@ teaser (`index.html#faq`, left as-is) with new questions — the homepage's
 list in sync with the Information dropdown if any of the four is ever
 renamed or removed.
 
+### blog.html
+
+The Journal's own dedicated page — the header/footer/every-page "Blog" link
+previously pointed at `index.html#blog`/`#blog` (a same-page anchor to the
+homepage's `.blog` teaser slider); that's now `blog.html` on **every**
+page, including index.html's own header/mobile-nav and every footer's
+"Journal" link (index.html's own footer previously left "Journal" as a bare
+`href="#"` placeholder — that's fixed too). This is the same
+"give it a real destination page, repoint every nav reference" pattern
+`enquire.html` already established (see below) — apply it again if another
+same-page anchor ever gets its own page.
+
+Same header/footer/hero pattern as the other inner pages (own photo,
+`paro attractions header.jpg`). Content is deliberately minimal — this
+page's whole job is to give the homepage's teaser slider content a
+permanent, browsable home, not to add a new content system:
+
+1. **`.tour-head` (reused, with its `p` variant)** — "Stories From The
+   Journal" + a short lead paragraph, same component
+   `cultural-tours.html` uses for its own heading+description.
+2. **`.blog-grid`/`.blog-card`** — the **same six posts** as the
+   homepage's `.blog` teaser slider (same images, dates, titles — copy
+   stays word-for-word in sync between the two; neither card shows a
+   byline or description anymore, see the `index.html` Blog section notes
+   above), just laid out as a plain static 3-up grid (`.blog-grid`, new CSS under
+   "BLOG PAGE" at the end of `style.css`) instead of a scroll-snap slider.
+   `.blog-card` itself needed zero changes — its `flex` property (written
+   for the homepage's flex-based `.blog-track`) is simply inert inside a
+   CSS Grid parent, so the exact same class works in both contexts
+   unmodified. Five of the six cards still link to `#` (no article page
+   yet) — the first, **"Inside Tiger's Nest: What To Know Before You
+   Climb,"** links to its own dedicated page, `inside-tigers-nest.html`
+   (see below), same exception-card pattern `cultural-tours.html`'s
+   Tiger's Nest Pilgrimage tour card and `trekking-tours.html`'s Druk
+   Path Trek card already follow. Give another post its own page and
+   repoint its card the same way.
+3. **Dark CTA** — same pattern, own photo (`bumthang view1.jpg`).
+
+The homepage's own `.blog` teaser section is untouched (still a slider,
+still six cards, first one now linking to `inside-tigers-nest.html` like
+its `blog.html` counterpart) — this page doesn't replace it, it just gives
+"Blog" in the nav somewhere real to go. Don't add a
+"View All Stories" link back onto the homepage teaser to point here
+without being asked — that button was deliberately removed earlier (see
+the `index.html` Blog section notes above) for a different reason (visual
+clutter in the slider's header row), unrelated to this page existing now.
+
+### inside-tigers-nest.html
+
+The first individual article page — for the Journal's "Inside Tiger's
+Nest: What To Know Before You Climb" post (both `index.html`'s teaser
+slider and `blog.html`'s grid link their first card here now). Modeled on
+a Breathe Bhutan blog-post page the user shared as a reference,
+**restructured to match, reskinned entirely in Altara's own system** —
+same reasoning every other reference-modeled page on this site follows
+(`tigers-nest-pilgrimage.html`, `druk-path-trek.html`, `why-bhutan.html`):
+the reference's actual layout shape carried over, not its fonts/colors.
+Same header/footer/hero as every other inner page — `.hero.hero--page.hero--center`
+with `.hero-mist`, title overlaid on the photo (`LLL05202.jpg`, the same
+photo the teaser card uses — the same "one photo for both the card and
+its own detail page" pattern `taktshang.jpg` already follows for the
+Tiger's Nest Pilgrimage tour). An earlier pass gave this page its own
+plain-image-then-title-below hero instead (`.article-hero`/
+`.article-header`), matching the Breathe Bhutan reference's own hero
+layout more literally, but that was reverted in favor of staying
+consistent with every other inner page's hero — don't reintroduce
+`.article-hero`/`.article-header` from memory. `.article-meta` (the small
+gold byline/date line) now sits at the very top of `.article-body`
+instead, directly above the intro paragraph, since the title itself lives
+in the hero like it does everywhere else.
+
+1. **`.article-list`** — the numbered-tips list, translating the
+   reference's own numbered-experience list into this page's five tips
+   (same content as the previous H2-per-tip version, just restructured):
+   a plain `<ol>` with `.article-list-number` (a large gold "01"/"02"/...)
+   beside `.article-list-content` (`<h3>` + `<p>`), separated by rule
+   lines rather than boxed cards — matching the site's existing rule-line
+   list language (`.faq-item`) rather than inventing a card style. The
+   "What To Bring" item (05) holds `.tour-highlights.tour-highlights--stack`
+   verbatim (the same single-column checklist modifier
+   `druk-path-trek.html`'s cost breakdown introduced) as its content
+   instead of a paragraph.
+2. **`.article-share`** — the translated version of the reference's "Love
+   This? Share It" prompt: plain Facebook/WhatsApp/email share-URL links
+   (`facebook.com/sharer/sharer.php?u=...`, `wa.me/?text=...`,
+   `mailto:?subject=...&body=...`), no JS, same no-backend approach every
+   other link on the site already uses.
+3. **`.article-layout`/`.article-sidebar`** — the translated version of
+   the reference's "Related Posts" sidebar: `.article-layout` splits
+   `.article-section .container` into a `1fr`/`340px` grid (main article
+   left, sidebar right, `max-width:1100px`), replacing an earlier pass
+   that instead reused `.blog-section`/`.blog-grid` as a full-width
+   "More From The Journal" grid *below* the article — don't bring that
+   version back without being asked; the sidebar is what's there now.
+   `.article-sidebar` is a bordered white card (`position:sticky` on
+   desktop, same "card floating on off-white" contrast every other card
+   on the site uses) holding `.article-sidebar-list` — 4 of the other 5
+   Journal posts (Punakha Dzong, Tshechu Festivals, Bumthang Valley Diary,
+   First Time In Bhutan; only "What To Pack For A Bhutan Trek" is left
+   out), each `.article-sidebar-item` a small thumbnail + title + date,
+   still linking to `#` since none of those has its own article page
+   yet — and a `.btn.btn-outline-green` "View All Journal Posts" linking
+   to `blog.html` underneath the list, translating the reference's pill
+   "VIEW ALL BLOGS" button into the site's own sharp-corner button
+   language rather than copying its rounded shape. Below `900px` the grid
+   collapses to one column (sidebar drops below the article, sticky
+   positioning turns off) same as every other two-column layout on the
+   site collapsing at that breakpoint.
+4. **Dark CTA** — same pattern, own photo (`Lhuentse dzong.jpg`), then the
+   standard footer.
+
+New CSS under "BLOG ARTICLE PAGE" at the end of `style.css` covers
+`.article-layout`/`.article-list`/`.article-share`/`.article-sidebar` — the
+reading column stays a narrower `720px` (`.article-body`,
+`.tour-content-inner`'s `1100px` column reads too wide for a plain
+editorial article). If a second article page is ever built, copy this
+page's structure (not `tigers-nest-pilgrimage.html`'s tour-detail
+template) — the two are unrelated despite the similar name.
+
 ### enquire.html
 
 The dedicated contact page — same header/footer/hero pattern as the other
@@ -968,13 +1109,33 @@ the `.mobile-nav-toggle` generalization that already supports it).
 
 ### `.hero--page` content pattern
 
-Every inner-page hero (`about.html`, `cultural-tours.html`, `trekking-tours.html`) shows **only**
-the `<h1>` page title inside `.hero-content` — no eyebrow, no `.hero-sub`
-description, no CTA buttons (those belong on the homepage hero only). An
-earlier version put an eyebrow + description underneath the title; that was
-deliberately simplified down to just the title. Follow this for any new
-`.hero--page` hero rather than reintroducing the eyebrow/description.
-`.hero--page` alone is bottom-**left**; both current inner pages add
+Every inner-page hero shows **only** the `<h1>` page title inside
+`.hero-content` — no eyebrow, no `.hero-sub` description, no CTA buttons
+(those belong on the homepage hero only). An earlier version put an
+eyebrow + description underneath the title; that was deliberately
+simplified down to just the title. Follow this for any new `.hero--page`
+hero rather than reintroducing the eyebrow/description.
+
+The `<h1>` itself is the **plain page title** — the same short label used
+in the nav dropdown/footer for that page (`about.html` → "About",
+`cultural-tours.html` → "Cultural Tours", `trekking-tours.html` →
+"Trekking Tours", `festival-tours.html` → "Festival Tours",
+`luxury-tours.html` → "Luxury Tours", `why-bhutan.html` → "Why Bhutan",
+`about-bhutan.html` → "About Bhutan", `tariff.html` → "Tariff",
+`faq.html` → "FAQ", `enquire.html` → "Enquire Now", `blog.html` →
+"Blog") — not evocative marketing copy. An earlier version used longer,
+two-line taglines instead (e.g. cultural-tours.html's own
+"Journeys Into Bhutan's Living Heritage", trekking-tours.html's
+"Trails Into Bhutan's Untouched High Country"); those were replaced with
+the plain title site-wide, so don't reintroduce a tagline-style `<h1>`
+on any of these pages without being asked. This doesn't apply to
+tour-detail pages (`tigers-nest-pilgrimage.html`, `druk-path-trek.html`,
+which use `.hero--tour` and already show their own specific tour name)
+or article pages (`inside-tigers-nest.html`, which already shows its own
+specific post title) — both of those were already "the page's own title"
+before this convention was written down, so nothing changed there.
+
+`.hero--page` alone is bottom-**left**; most inner pages add
 `.hero--center` on top of it, which only overrides the horizontal alignment
 (`justify-content`) to center the title — vertical stays bottom (`align-items`
 is inherited from `.hero--page`, not reset) so the hero photo shows through
